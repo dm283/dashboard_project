@@ -3,7 +3,7 @@ from dash import Dash, dcc, html, Input, Output, State, dash_table, ALL
 from datetime import datetime
 
 import functions_library as dfl
-from objects import database_select, data_filters
+from objects import database_select, data_filters, common_widgets
 
 #  Загрузка objects - select from database
 select = database_select.select
@@ -12,104 +12,46 @@ column_names = database_select.column_names
 #  Загрузка objects - filters
 data_filter = data_filters.data_filter
 
+#  Загрузка objects - common widgets
+btn_settings = common_widgets.btn_settings
+btn_update_data = common_widgets.btn_update_data
+DATA_UPDATE_PERIOD = common_widgets.DATA_UPDATE_PERIOD
 
 update_date = datetime.now().strftime('%Y-%m-%d %H:%m')
 countries = ['India', 'Russia', 'England', 'US', 'Japan', 'China', 'Australia', 'Canada']
 devices = ['desktop', 'mobile']
 web_services = ['aDashboard', 'aMessenger']
 ax_msg, ay_msg, ax_dash, ay_dash = [], [], [], []
-DATA_UPDATE_PERIOD = 10000
+
 
 conn = dfl.get_db_connect()
 
 app = Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
 app.title = 'Altasoft | Dashboard | Мониторинг загруженности веб-сервисов' 
 
-
-# settings button & modal window
-btn_settings = [
-            dbc.Button("Настройки", id='btn_settings', n_clicks=0, 
-                style={'width': '100%', 'backgroundColor': 'Green', 'border': 'None'}),
-            dbc.Modal(
-                [
-                    dbc.ModalHeader(dbc.ModalTitle("Настройки дашборда")),
-                    dbc.ModalBody([
-                        dbc.Row([
-                            dbc.Col(dbc.Label("Период обновления данных (сек)"), width=7),
-                            dbc.Col(dbc.Input(id='input_period', value=DATA_UPDATE_PERIOD, type='text'))
-                        ], style={'marginBottom': '5px'}),
-                        dbc.Row([
-                            dbc.Col(dbc.Label('Цветовая тема'), width=7),
-                            dbc.Col(dbc.Select(id='select_theme', options=['Светлая', 'Тёмная'], value='Светлая'))
-                        ], style={'marginBottom': '5px'})
-                    ]),
-                    dbc.ModalFooter(html.Div([
-                        dbc.Button("Применить", id='btn_settings_apply', n_clicks=0,
-                            style={'width': '120px', 'marginRight': '10px'}, color="success"), 
-                        dbc.Button("Закрыть", id='btn_settings_close', n_clicks=0,
-                            style={'width': '120px'}, color="warning" )
-                        ]))
-                ],
-                id='settings_modal_window',
-                is_open=False
-            ),
-        ]
-
-# update button
-btn_update_data = dbc.Button(
-                            "Обновить данные", id='btn_update_data', className="ms-auto", n_clicks=0, 
-                                style={'width': '100%', 'backgroundColor': 'LightSalmon', 'border': 'None'}
-                        )
-
 # WIDGETS
 widget = {}
-# widget 1
-widget[1] = [ html.H1(style={'color': 'DarkBlue'}, id='label_cnt_users'), html.H6('Кол-во пользователей') ]
-# widget 2
-widget[2] = [ html.H1(style={'color': 'DarkBlue'}, id='label_workload'), html.H6('Уровень загруженности') ]
-# widget 3
-widget[3] = [ html.H1(style={'color': 'DarkBlue'}, id='label_cnt_countries'), html.H6('Представлено стран') ]
-# widget 4
-widget[4] = dcc.Graph(id='pie_device')
-# widget 5
-widget[5] = dcc.Graph(id='bar_country')
-# widget 6
-widget[6] = dcc.Graph(id='scatter_cnt_users')
-# widget 7
-modal_table_record = dbc.Modal(
-                [
-                    dbc.ModalHeader(dbc.ModalTitle('Детализация данных о пользователях онлайн', style={'fontSize': '20px'})),
-                    dbc.ModalBody(id='modal_table_record_content'),
-                    dbc.ModalFooter(html.Div([
-                        dbc.Button("Закрыть", id='btn_modal_table_record_close', n_clicks=0,
-                            style={'width': '120px'}, color="warning" )
-                        ]))
-                ],
-                id='modal_table_record',
-                is_open=False
-            )
-widget[7] = [ modal_table_record,
-                html.H6('Детализация данных о пользователях онлайн', style={'color': 'white'}),
-                dash_table.DataTable(
-                    columns=[{"name": i, "id": i} for i in ['user_id', 'device', 'country', 'sign_date']],
-                    style_cell = {'font_size': '10px', 'textAlign': 'center'},
-                    page_action='none',
-                    style_table={'height': '715px', 'overflowY': 'auto'},
-                    style_header={'backgroundColor': 'Black', 'color': 'white'},
-                    style_data={'backgroundColor': 'DarkSlateGray', 'color': 'white'},
-                    id='table_details'
-                    ),
-                 ]
 
-# widget 8
-widget[8] = dcc.Graph(id='pie_web_services')
-# widget 9
-widget[9] = [ html.H1(style={'color': 'DarkBlue'}, id='label_cnt_active_web_services'), html.H6('Сервисы с пользователями') ]
+from objects import (widget_graph_bar_countries, widget_graph_pie_devices, widget_graph_scatter_cnt_users, widget_label_cnt_countries,
+    widget_label_cnt_users, widget_label_workload, widget_table_record_details)
+
+widget[0] = widget_label_cnt_users.widget
+widget[1] = widget_label_workload.widget
+widget[2] = widget_label_cnt_countries.widget
+widget[3] = widget_graph_pie_devices.widget
+widget[4] = widget_graph_bar_countries.widget
+widget[5] = widget_graph_scatter_cnt_users.widget
+widget[6] = widget_table_record_details.widget
 
 
 tab_1 = dbc.Row([
         dbc.Col([
             dbc.Row([
+                dbc.Col(
+                    html.Div(
+                        widget[0],
+                        className='widget_cell_grid_div_label'),
+                    className='widget_cell_grid', width=4),
                 dbc.Col(
                     html.Div(
                         widget[1],
@@ -120,22 +62,17 @@ tab_1 = dbc.Row([
                         widget[2],
                         className='widget_cell_grid_div_label'),
                     className='widget_cell_grid', width=4),
-                dbc.Col(
-                    html.Div(
-                        widget[3],
-                        className='widget_cell_grid_div_label'),
-                    className='widget_cell_grid', width=4),
             ]),
 
             dbc.Row([
                 dbc.Col(
                     html.Div(
-                        widget[4],
+                        widget[3],
                         className='widget_cell_grid_div_graph'),
                     className='widget_cell_grid', width=6),
                 dbc.Col(
                     html.Div(
-                        widget[5],
+                        widget[4],
                         className='widget_cell_grid_div_graph'),
                     className='widget_cell_grid', width=6),
             ]
@@ -144,7 +81,7 @@ tab_1 = dbc.Row([
             dbc.Row(
                 dbc.Col(
                     html.Div(
-                        widget[6],
+                        widget[5],
                         className='widget_cell_grid_div_graph'),
                     className='widget_cell_grid', width=12),
             ),
@@ -154,7 +91,7 @@ tab_1 = dbc.Row([
 
         dbc.Col(
             html.Div(
-                widget[7],
+                widget[6],
                 className='widget_cell_grid_div_table'),
             className='widget_cell_grid', style={'backgroundColor': 'Gray'}, width=5),
 
@@ -196,7 +133,7 @@ app.layout = html.Div([
             dbc.Row( btn_settings, className='widget_cell_grid' ),
             dbc.Row( btn_update_data, className='widget_cell_grid' ),
 
-            #  Area of filters
+            #  Area of filters - формируется динамически
         ] + create_filters(data_filter)
 
         , style={'backgroundColor': 'GhostWhite'}, width=2),
