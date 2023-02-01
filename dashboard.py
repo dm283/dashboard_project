@@ -1,20 +1,22 @@
 import plotly.express as px, dash_bootstrap_components as dbc
-from dash import Dash, dcc, html, Input, Output, State, dash_table
+from dash import Dash, dcc, html, Input, Output, State, dash_table, ALL
 from datetime import datetime
 
 import functions_library as dfl
-from objects import database_select
+from objects import database_select, data_filters
 
+#  Загрузка objects - select from database
 select = database_select.select
 column_names = database_select.column_names
 
+#  Загрузка objects - filters
+data_filter = data_filters.data_filter
+
+
 update_date = datetime.now().strftime('%Y-%m-%d %H:%m')
-countries = ['All', 'India', 'Russia', 'England', 'US', 'Japan', 'China', 'Australia', 'Canada']
-countries_values_all_filter = ['India', 'Russia', 'England', 'US', 'Japan', 'China', 'Australia', 'Canada']
-devices = ['All', 'Desktop', 'Mobile']
-devices_values_all_filter = ['desktop', 'mobile']
+countries = ['India', 'Russia', 'England', 'US', 'Japan', 'China', 'Australia', 'Canada']
+devices = ['desktop', 'mobile']
 web_services = ['aDashboard', 'aMessenger']
-web_services_all_filter = ['aDashboard', 'aMessenger']
 ax_msg, ay_msg, ax_dash, ay_dash = [], [], [], []
 DATA_UPDATE_PERIOD = 10000
 
@@ -58,21 +60,6 @@ btn_update_data = dbc.Button(
                             "Обновить данные", id='btn_update_data', className="ms-auto", n_clicks=0, 
                                 style={'width': '100%', 'backgroundColor': 'LightSalmon', 'border': 'None'}
                         )
-
-# FILTERS
-data_filter = {}
-# filter 1
-data_filter[1] = [html.H6('Тип устройства пользователя', className='filter_label'),
-                dcc.Dropdown(options=devices, value='All', placeholder="Выберите тип устройства", clearable=False,
-                     className='filter_dropdown', id='filter_device')]
-# filter 2
-data_filter[2] = [html.H6('Страна пользователя', className='filter_label'),
-                dcc.Dropdown(options=countries, value='All', placeholder="Выберите страну", clearable=False,
-                    className='filter_dropdown', id='filter_country')]
-# filter 3
-data_filter[3] = [html.H6('Веб-сервис', className='filter_label'),
-                dcc.Dropdown(options=web_services, value='aDashboard', placeholder="Выберите веб-сервис", clearable=False,
-                    className='filter_dropdown', id='filter_web_service')]
 
 # WIDGETS
 widget = {}
@@ -178,6 +165,18 @@ tab_2 = dbc.Row([
     'TAB 2 CONTENT'
     ], style={'margin': '2px 0px 2px 0px'})
 
+
+def create_filters(data_filter):
+    #  Формирует область виджетов "фильтры"
+    filters = []
+    for k in range(len(data_filter)):
+        filters.append(
+            dbc.Row( html.Div( data_filter[k], className='widget_cell_grid_div' ), className='widget_cell_grid' )
+        )
+
+    return filters
+
+
 # *************************** LAYOUT *********************************************************
 app.layout = html.Div([
     #  HEADER AREA
@@ -193,19 +192,14 @@ app.layout = html.Div([
         #  Column of management
         dbc.Col([
 
-            #  Div of management buttons
-            #dbc.Row([
-                dbc.Row( btn_settings, className='widget_cell_grid' ),
-                dbc.Row( btn_update_data, className='widget_cell_grid' ),
-            #]),
+            #  Area of management buttons
+            dbc.Row( btn_settings, className='widget_cell_grid' ),
+            dbc.Row( btn_update_data, className='widget_cell_grid' ),
 
-            #  Div of data filters
-            #dbc.Row([
-                dbc.Row( html.Div( data_filter[1], className='widget_cell_grid_div' ), className='widget_cell_grid' ),
-                dbc.Row( html.Div( data_filter[2], className='widget_cell_grid_div' ), className='widget_cell_grid' ),
-                dbc.Row( html.Div( data_filter[3], className='widget_cell_grid_div' ), className='widget_cell_grid' )
-            #])
-        ], style={'backgroundColor': 'GhostWhite'}, width=2),
+            #  Area of filters
+        ] + create_filters(data_filter)
+
+        , style={'backgroundColor': 'GhostWhite'}, width=2),
 
         #  Column of widgets (main dashboard content)
         dbc.Col([
@@ -228,12 +222,12 @@ app.layout = html.Div([
 ])
 
 
-# ************************ ДАШБОРД #1 - aMessenger functions ***********************
-def update_label_cnt_users(df, filter_value_device, filter_value_country, filter_value_web_service, n):
+# ************************ UPDATE WIDGETS FUNCTIONS ***********************
+def update_label_cnt_users(df, filter_values_list, n):
     #
-    filter_device = devices_values_all_filter if filter_value_device == 'All' else [filter_value_device.lower()]
-    filter_country = countries_values_all_filter if filter_value_country == 'All' else [filter_value_country]
-    filter_web_service = [filter_value_web_service] 
+    filter_device = devices if filter_values_list[0] == None else [filter_values_list[0]]
+    filter_country = countries if filter_values_list[1] == None else [filter_values_list[1]]
+    filter_web_service = [filter_values_list[2]] 
 
     return df[
         (df['web_service'].isin(filter_web_service)) & 
@@ -242,52 +236,72 @@ def update_label_cnt_users(df, filter_value_device, filter_value_country, filter
         ]['id'].count()
 
 
-def update_label_workload(df, filter_value_web_service, n):
+def update_label_workload(df, filter_values_list, n):
     # 
-    filter_web_service = [filter_value_web_service] 
+    filter_device = devices if filter_values_list[0] == None else [filter_values_list[0]]
+    filter_country = countries if filter_values_list[1] == None else [filter_values_list[1]]
+    filter_web_service = [filter_values_list[2]] 
 
     return f"""{((df[
-        (df['web_service'].isin(filter_web_service))
+        (df['web_service'].isin(filter_web_service)) & 
+        (df['device'].isin(filter_device)) & 
+        (df['country'].isin(filter_country))
         ]['id'].count()/30)*100).round()}"""[:-2] + "%"
 
-def update_label_cnt_countries(df, filter_value_device, filter_value_web_service, n):
+
+def update_label_cnt_countries(df, filter_values_list, n):
     #
-    filter_device = devices_values_all_filter if filter_value_device == 'All' else [filter_value_device.lower()]
-    filter_web_service = [filter_value_web_service] 
+    filter_device = devices if filter_values_list[0] == None else [filter_values_list[0]]
+    filter_country = countries if filter_values_list[1] == None else [filter_values_list[1]]
+    filter_web_service = [filter_values_list[2]] 
 
     return len(df[
         (df['web_service'].isin(filter_web_service)) & 
-        (df['device'].isin(filter_device))
+        (df['device'].isin(filter_device)) & 
+        (df['country'].isin(filter_country))
         ]['country'].unique())
 
 
-def update_pie_device(df, filter_value_country, filter_value_web_service, n):
+def update_pie_device(df, filter_values_list, n):
     #
-    filter_country = countries_values_all_filter if filter_value_country == 'All' else [filter_value_country]
-    filter_web_service = [filter_value_web_service] 
+    filter_device = devices if filter_values_list[0] == None else [filter_values_list[0]]
+    filter_country = countries if filter_values_list[1] == None else [filter_values_list[1]]
+    filter_web_service = [filter_values_list[2]] 
+
     df_pie = df[ 
         (df['web_service'].isin(filter_web_service)) & 
-        (df['country'].isin(filter_country)) ]
+        (df['device'].isin(filter_device)) & 
+        (df['country'].isin(filter_country))
+        ]
     figure = px.pie(df_pie, values='cnt', names='device', title='Устройства пользователей', height=345)
     return figure
 
 
-def update_bar_country(df, filter_value_device, filter_value_web_service, n):
+def update_bar_country(df, filter_values_list, n):
     #
-    filter_device = devices_values_all_filter if filter_value_device == 'All' else [filter_value_device.lower()]
-    filter_web_service = [filter_value_web_service] 
+    filter_device = devices if filter_values_list[0] == None else [filter_values_list[0]]
+    filter_country = countries if filter_values_list[1] == None else [filter_values_list[1]]
+    filter_web_service = [filter_values_list[2]] 
+
     df_bar = df[ 
         (df['web_service'].isin(filter_web_service)) & 
-        (df['device'].isin(filter_device)) ]
+        (df['device'].isin(filter_device)) & 
+        (df['country'].isin(filter_country))
+        ]
     figure = px.bar(df_bar, y='country', x='cnt', title='Страны пользователей', height=345)
     return figure
 
 
-def update_scatter_cnt_users(df, filter_value_web_service, n):
+def update_scatter_cnt_users(df, filter_values_list, n):
     #
-    filter_web_service = [filter_value_web_service]
+    filter_device = devices if filter_values_list[0] == None else [filter_values_list[0]]
+    filter_country = countries if filter_values_list[1] == None else [filter_values_list[1]]
+    filter_web_service = [filter_values_list[2]] 
+
     cnt_users = df[
-        (df['web_service'].isin(filter_web_service))
+        (df['web_service'].isin(filter_web_service)) & 
+        (df['device'].isin(filter_device)) & 
+        (df['country'].isin(filter_country))
         ]['id'].count()
     if len(ay_msg) == 0 or cnt_users != ay_msg[-1]:
         per_dt = str(datetime.now().strftime("%H:%M:%S"))
@@ -301,11 +315,12 @@ def update_scatter_cnt_users(df, filter_value_web_service, n):
     return figure
 
 
-def update_table_details(df, filter_value_device, filter_value_country, filter_value_web_service, n):
+def update_table_details(df, filter_values_list, n):
     #
-    filter_device = devices_values_all_filter if filter_value_device == 'All' else [filter_value_device.lower()]
-    filter_country = countries_values_all_filter if filter_value_country == 'All' else [filter_value_country]
-    filter_web_service = [filter_value_web_service] 
+    filter_device = devices if filter_values_list[0] == None else [filter_values_list[0]]
+    filter_country = countries if filter_values_list[1] == None else [filter_values_list[1]]
+    filter_web_service = [filter_values_list[2]] 
+
     df_table = df[
         (df['web_service'].isin(filter_web_service)) &
         (df['device'].isin(filter_device)) & 
@@ -325,24 +340,23 @@ def update_table_details(df, filter_value_device, filter_value_country, filter_v
     Output('scatter_cnt_users', 'figure'),
     Output('table_details', 'data'),
     Output('interval_component', 'interval'),
-    Input('filter_device', 'value'),
-    Input('filter_country', 'value'),
-    Input('filter_web_service', 'value'),
+    Input({'type': 'filter_dropdown', 'index': ALL}, 'value'),  #  список значений всех фильтров
     Input('interval_component', 'n_intervals'),
     Input('btn_update_data', 'n_clicks')
 )
-def update_data(filter_value_device, filter_value_country, filter_value_web_service, n, n_update_btn):
-    #
+
+def update_data(filter_values_list, n, n_update_btn):
+    #  Обновляет данные
     df = dfl.get_db_data_to_datafame(conn, select, column_names); df['cnt'] = 1
 
     return (
-        update_label_cnt_users(df, filter_value_device, filter_value_country, filter_value_web_service, n),
-        update_label_workload(df, filter_value_web_service, n),
-        update_label_cnt_countries(df, filter_value_device, filter_value_web_service, n),
-        update_pie_device(df, filter_value_country, filter_value_web_service, n),
-        update_bar_country(df, filter_value_device, filter_value_web_service, n),
-        update_scatter_cnt_users(df, filter_value_web_service, n),
-        update_table_details(df, filter_value_device, filter_value_country, filter_value_web_service, n),
+        update_label_cnt_users(df, filter_values_list, n),
+        update_label_workload(df, filter_values_list, n),
+        update_label_cnt_countries(df, filter_values_list, n),
+        update_pie_device(df, filter_values_list, n),
+        update_bar_country(df, filter_values_list, n),
+        update_scatter_cnt_users(df, filter_values_list, n),
+        update_table_details(df, filter_values_list, n),
         DATA_UPDATE_PERIOD
     )
 
