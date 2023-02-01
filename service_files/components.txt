@@ -1,0 +1,32 @@
+html.Span  id='update_date'
+f'Последнее обновление данных: {update_date}'
+
+btn_settings = [
+    dbc.Button, id='btn_settings',
+    dbc.Modal, id='settings_modal_window'
+    ]
+input_period
+btn_settings_apply
+btn_settings_close
+
+
+btn_update_data = dbc.Button, id='btn_update_data'
+
+data_filter[1] = [html.H6, dcc.Dropdown(id='filter_device')]
+data_filter[2] = [html.H6, dcc.Dropdown(id='filter_country')]
+data_filter[3] = [html.H6, dcc.Dropdown(id='filter_web_service')]
+
+widget[1] = label_cnt_users
+widget[2] = label_workload
+widget[3] = label_cnt_countries
+widget[4] = pie_device
+widget[5] = bar_country
+widget[6] = scatter_cnt_users
+
+modal_table_record
+btn_modal_table_record_close
+modal_table_record_content
+widget[7] = table_details
+
+widget[8] = pie_web_services
+widget[9] = label_cnt_active_web_services

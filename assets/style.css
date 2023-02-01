@@ -1,0 +1,68 @@
+.header {
+    background-color: DarkCyan;
+    padding: 10px;
+    color: white;
+}
+
+.header_1 {
+    margin-left: 30px;
+    padding: 0px 15px 0px 15px;
+    font-size: 20px;
+    border-right: 1px solid white;
+}
+
+.header_2 {
+    padding: 0px 15px 0px 15px;
+    font-size: 20px;
+    border-right: 1px solid white;
+}
+
+.header_3 {
+    padding: 0px 15px 0px 15px;
+    font-size: 20px;
+}
+
+.update_date {
+    margin: 4px 0px 0px 450px;
+}
+
+.widget_cell_grid_div {
+    background-color: Grey; 
+    border-radius: 5px; 
+}
+
+.widget_cell_grid_div_label {
+    background-color: white; 
+    border-radius: 5px; 
+    text-align: center;
+    padding-bottom: 1px;
+}
+
+.widget_cell_grid_div_graph {
+    background-color: white; 
+    border-radius: 5px; 
+    text-align: center;
+    padding: 1px;
+}
+
+.widget_cell_grid_div_table {
+    background-color: DarkSlateGray; 
+    border-radius: 5px; 
+    text-align: center;
+    padding: 5px;
+}
+
+.widget_cell_grid {
+    padding: 5px;
+}
+
+.filter_label {
+    margin-top: 5px; 
+    font-size: 14px;
+}
+
+.filter_dropdown {
+    margin-bottom: 10px; 
+    width: 220px;
+    font-size: 14px;
+}
