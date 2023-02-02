@@ -3,7 +3,9 @@ from dash import Dash, dcc, html, Input, Output, State, dash_table, ALL
 from datetime import datetime
 
 import functions_library as dfl
-from objects import database_select, data_filters, common_widgets
+from objects import database_select, data_filters, common_widgets, markup
+from objects import (widget_graph_bar_countries, widget_graph_pie_devices, widget_graph_scatter_cnt_users, widget_label_cnt_countries,
+    widget_label_cnt_users, widget_label_workload, widget_table_record_details)
 
 #  Загрузка objects - select from database
 select = database_select.select
@@ -17,254 +19,72 @@ btn_settings = common_widgets.btn_settings
 btn_update_data = common_widgets.btn_update_data
 DATA_UPDATE_PERIOD = common_widgets.DATA_UPDATE_PERIOD
 
+#  Загрузка objects - markup
+widgets_area = markup.widgets_area
+
+#  Формирование области виджетов "фильтры"
+filters_area = []
+for k in range(len(data_filter)):
+    filters_area.append(
+        dbc.Row( html.Div( data_filter[k], className='widget_cell_grid_div' ), className='widget_cell_grid' )
+    )
+
+#  Загрузка objects - callback функции формирования/обновления виджетов
+update_label_cnt_users = widget_label_cnt_users.update_label_cnt_users
+update_label_workload = widget_label_workload.update_label_workload
+update_label_cnt_countries = widget_label_cnt_countries.update_label_cnt_countries
+update_pie_device = widget_graph_pie_devices.update_pie_device
+update_bar_country = widget_graph_bar_countries.update_bar_country
+update_scatter_cnt_users = widget_graph_scatter_cnt_users.update_scatter_cnt_users
+update_table_details = widget_table_record_details.update_table_details
+
 update_date = datetime.now().strftime('%Y-%m-%d %H:%m')
 countries = ['India', 'Russia', 'England', 'US', 'Japan', 'China', 'Australia', 'Canada']
 devices = ['desktop', 'mobile']
 web_services = ['aDashboard', 'aMessenger']
-ax_msg, ay_msg, ax_dash, ay_dash = [], [], [], []
+ax_msg, ay_msg = [], []  # массивы хранения кол-ва пользователей для виджета scatter
 
-
+#  Подключение к базе данных
 conn = dfl.get_db_connect()
 
+#  Создание dash-приложения
 app = Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
 app.title = 'Altasoft | Dashboard | Мониторинг загруженности веб-сервисов' 
 
-# WIDGETS
-widget = {}
-
-from objects import (widget_graph_bar_countries, widget_graph_pie_devices, widget_graph_scatter_cnt_users, widget_label_cnt_countries,
-    widget_label_cnt_users, widget_label_workload, widget_table_record_details)
-
-widget[0] = widget_label_cnt_users.widget
-widget[1] = widget_label_workload.widget
-widget[2] = widget_label_cnt_countries.widget
-widget[3] = widget_graph_pie_devices.widget
-widget[4] = widget_graph_bar_countries.widget
-widget[5] = widget_graph_scatter_cnt_users.widget
-widget[6] = widget_table_record_details.widget
-
-
-tab_1 = dbc.Row([
-        dbc.Col([
-            dbc.Row([
-                dbc.Col(
-                    html.Div(
-                        widget[0],
-                        className='widget_cell_grid_div_label'),
-                    className='widget_cell_grid', width=4),
-                dbc.Col(
-                    html.Div(
-                        widget[1],
-                        className='widget_cell_grid_div_label'),
-                    className='widget_cell_grid', width=4),
-                dbc.Col(
-                    html.Div(
-                        widget[2],
-                        className='widget_cell_grid_div_label'),
-                    className='widget_cell_grid', width=4),
-            ]),
-
-            dbc.Row([
-                dbc.Col(
-                    html.Div(
-                        widget[3],
-                        className='widget_cell_grid_div_graph'),
-                    className='widget_cell_grid', width=6),
-                dbc.Col(
-                    html.Div(
-                        widget[4],
-                        className='widget_cell_grid_div_graph'),
-                    className='widget_cell_grid', width=6),
-            ]
-            ),
-
-            dbc.Row(
-                dbc.Col(
-                    html.Div(
-                        widget[5],
-                        className='widget_cell_grid_div_graph'),
-                    className='widget_cell_grid', width=12),
-            ),
-        
-        ], style={'backgroundColor': 'Gainsboro'}, width=7),
-
-
-        dbc.Col(
-            html.Div(
-                widget[6],
-                className='widget_cell_grid_div_table'),
-            className='widget_cell_grid', style={'backgroundColor': 'Gray'}, width=5),
-
-    ], style={'margin': '2px 0px 2px 0px'})
-
-
-tab_2 = dbc.Row([
-    'TAB 2 CONTENT'
-    ], style={'margin': '2px 0px 2px 0px'})
-
-
-def create_filters(data_filter):
-    #  Формирует область виджетов "фильтры"
-    filters = []
-    for k in range(len(data_filter)):
-        filters.append(
-            dbc.Row( html.Div( data_filter[k], className='widget_cell_grid_div' ), className='widget_cell_grid' )
-        )
-
-    return filters
-
-
 # *************************** LAYOUT *********************************************************
 app.layout = html.Div([
-    #  HEADER AREA
+    #  ОБЛАСТЬ ШАПКИ ДАШБОРДА
     html.Header(children=[
         html.Span('Altasoft', className='header_1'),
         html.Span('Dashboard', className='header_2'),
         html.Span('Мониторинг загруженности веб-сервисов', className='header_3'),
         html.Span(f'Последнее обновление данных: {update_date}', id='update_date', className='update_date')
-    ], className='header'),
+        ], className='header'),
 
     dbc.Row([
-
-        #  Column of management
+        #  **********  ОБЛАСТЬ ВИДЖЕТОВ УПРАВЛЕНИЯ ДАШБОРДОМ
         dbc.Col([
-
-            #  Area of management buttons
+            #  Область кнопок настроек и обновления данных
             dbc.Row( btn_settings, className='widget_cell_grid' ),
             dbc.Row( btn_update_data, className='widget_cell_grid' ),
-
-            #  Area of filters - формируется динамически
-        ] + create_filters(data_filter)
-
-        , style={'backgroundColor': 'GhostWhite'}, width=2),
-
-        #  Column of widgets (main dashboard content)
-        dbc.Col([
-            dbc.Tabs([
-            dbc.Tab([
-                tab_1,
-                ], label='Основные показатели'),
-            dbc.Tab([
-                tab_2,
-                ], label='Динамика')
-            ]),
-        ], style={'backgroundColor': 'GhostWhite', 'padding': '0', 'border': 'None'}, width=10),
+            ]
+            #  Область фильтров
+            + filters_area,
+            style={'backgroundColor': 'GhostWhite'}, 
+            width=2),
+        #  **********  ОБЛАСТЬ ВИДЖЕТОВ С ДАННЫМИ (ОСНОВНОЙ КОНТЕНТ ДАШБОРДА)
+        dbc.Col(
+            widgets_area,
+            style={'backgroundColor': 'GhostWhite', 'padding': '0', 'border': 'None'}, 
+            width=10),
      
-    #  INTERVAL 
-    dcc.Interval(
-            id='interval_component',
-            n_intervals=0)
+        #  INTERVAL (компонент для периодического обновления данных)
+        dcc.Interval(
+                id='interval_component',
+                n_intervals=0)
 
-    ], style={'margin': '2px'})
-])
-
-
-# ************************ UPDATE WIDGETS FUNCTIONS ***********************
-def update_label_cnt_users(df, filter_values_list, n):
-    #
-    filter_device = devices if filter_values_list[0] == None else [filter_values_list[0]]
-    filter_country = countries if filter_values_list[1] == None else [filter_values_list[1]]
-    filter_web_service = [filter_values_list[2]] 
-
-    return df[
-        (df['web_service'].isin(filter_web_service)) & 
-        (df['device'].isin(filter_device)) & 
-        (df['country'].isin(filter_country))
-        ]['id'].count()
-
-
-def update_label_workload(df, filter_values_list, n):
-    # 
-    filter_device = devices if filter_values_list[0] == None else [filter_values_list[0]]
-    filter_country = countries if filter_values_list[1] == None else [filter_values_list[1]]
-    filter_web_service = [filter_values_list[2]] 
-
-    return f"""{((df[
-        (df['web_service'].isin(filter_web_service)) & 
-        (df['device'].isin(filter_device)) & 
-        (df['country'].isin(filter_country))
-        ]['id'].count()/30)*100).round()}"""[:-2] + "%"
-
-
-def update_label_cnt_countries(df, filter_values_list, n):
-    #
-    filter_device = devices if filter_values_list[0] == None else [filter_values_list[0]]
-    filter_country = countries if filter_values_list[1] == None else [filter_values_list[1]]
-    filter_web_service = [filter_values_list[2]] 
-
-    return len(df[
-        (df['web_service'].isin(filter_web_service)) & 
-        (df['device'].isin(filter_device)) & 
-        (df['country'].isin(filter_country))
-        ]['country'].unique())
-
-
-def update_pie_device(df, filter_values_list, n):
-    #
-    filter_device = devices if filter_values_list[0] == None else [filter_values_list[0]]
-    filter_country = countries if filter_values_list[1] == None else [filter_values_list[1]]
-    filter_web_service = [filter_values_list[2]] 
-
-    df_pie = df[ 
-        (df['web_service'].isin(filter_web_service)) & 
-        (df['device'].isin(filter_device)) & 
-        (df['country'].isin(filter_country))
-        ]
-    figure = px.pie(df_pie, values='cnt', names='device', title='Устройства пользователей', height=345)
-    return figure
-
-
-def update_bar_country(df, filter_values_list, n):
-    #
-    filter_device = devices if filter_values_list[0] == None else [filter_values_list[0]]
-    filter_country = countries if filter_values_list[1] == None else [filter_values_list[1]]
-    filter_web_service = [filter_values_list[2]] 
-
-    df_bar = df[ 
-        (df['web_service'].isin(filter_web_service)) & 
-        (df['device'].isin(filter_device)) & 
-        (df['country'].isin(filter_country))
-        ]
-    figure = px.bar(df_bar, y='country', x='cnt', title='Страны пользователей', height=345)
-    return figure
-
-
-def update_scatter_cnt_users(df, filter_values_list, n):
-    #
-    filter_device = devices if filter_values_list[0] == None else [filter_values_list[0]]
-    filter_country = countries if filter_values_list[1] == None else [filter_values_list[1]]
-    filter_web_service = [filter_values_list[2]] 
-
-    cnt_users = df[
-        (df['web_service'].isin(filter_web_service)) & 
-        (df['device'].isin(filter_device)) & 
-        (df['country'].isin(filter_country))
-        ]['id'].count()
-    if len(ay_msg) == 0 or cnt_users != ay_msg[-1]:
-        per_dt = str(datetime.now().strftime("%H:%M:%S"))
-        ax_msg.append(per_dt)
-        ay_msg.append(cnt_users)
-        if len(ax_msg) > 9:
-            ax_msg.pop(0)
-            ay_msg.pop(0)
-    figure = px.scatter(title='Кол-во пользователей онлайн', height=300)
-    figure.add_traces(list(px.line(x=ax_msg, y=ay_msg, markers=True).select_traces()))
-    return figure
-
-
-def update_table_details(df, filter_values_list, n):
-    #
-    filter_device = devices if filter_values_list[0] == None else [filter_values_list[0]]
-    filter_country = countries if filter_values_list[1] == None else [filter_values_list[1]]
-    filter_web_service = [filter_values_list[2]] 
-
-    df_table = df[
-        (df['web_service'].isin(filter_web_service)) &
-        (df['device'].isin(filter_device)) & 
-        (df['country'].isin(filter_country))
-        ]
-    data = df_table[['id', 'web_service', 'user_id', 'device', 'country', 'user_status', 'sign_date', 'signout_date']].to_dict('records')
-    return data
+        ], style={'margin': '2px'})
+    ])
 
 
 # ****************** Callbacks *************************
@@ -276,6 +96,7 @@ def update_table_details(df, filter_values_list, n):
     Output('bar_country', 'figure'),
     Output('scatter_cnt_users', 'figure'),
     Output('table_details', 'data'),
+
     Output('interval_component', 'interval'),
     Input({'type': 'filter_dropdown', 'index': ALL}, 'value'),  #  список значений всех фильтров
     Input('interval_component', 'n_intervals'),
@@ -284,6 +105,8 @@ def update_table_details(df, filter_values_list, n):
 
 def update_data(filter_values_list, n, n_update_btn):
     #  Обновляет данные
+    global ax_msg, ay_msg
+
     df = dfl.get_db_data_to_datafame(conn, select, column_names); df['cnt'] = 1
 
     return (
@@ -292,7 +115,7 @@ def update_data(filter_values_list, n, n_update_btn):
         update_label_cnt_countries(df, filter_values_list, n),
         update_pie_device(df, filter_values_list, n),
         update_bar_country(df, filter_values_list, n),
-        update_scatter_cnt_users(df, filter_values_list, n),
+        update_scatter_cnt_users(df, filter_values_list, ax_msg, ay_msg, n),
         update_table_details(df, filter_values_list, n),
         DATA_UPDATE_PERIOD
     )

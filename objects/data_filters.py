@@ -32,4 +32,3 @@ data_filter[2] = [html.H6('Веб-сервис', className='filter_label'),
                     className='filter_dropdown', 
                     id={'type': 'filter_dropdown', 'index': 'filter_web_service'}
                     )]
-
