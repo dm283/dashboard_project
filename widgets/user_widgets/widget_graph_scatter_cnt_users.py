@@ -29,6 +29,6 @@ def update_scatter_cnt_users(df, filter_values_list, ax_msg, ay_msg, n):
         if len(ax_msg) > 9:
             ax_msg.pop(0)
             ay_msg.pop(0)
-    figure = px.scatter(title='Кол-во пользователей онлайн', height=300)
+    figure = px.scatter(title='Кол-во пользователей онлайн', height=250)
     figure.add_traces(list(px.line(x=ax_msg, y=ay_msg, markers=True).select_traces()))
     return figure

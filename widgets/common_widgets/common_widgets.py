@@ -3,12 +3,13 @@
 import plotly.express as px, dash_bootstrap_components as dbc
 from dash import Dash, dcc, html, Input, Output, State, dash_table, ALL
 
-DATA_UPDATE_PERIOD = 10000
+DATA_UPDATE_PERIOD = 10
 
 #  Кнопка НАСТРОЙКИ с модальным окном
 btn_settings = [
-            dbc.Button("Настройки", id='btn_settings', n_clicks=0, 
-                style={'width': '100%', 'backgroundColor': 'Green', 'border': 'None'}),
+            # dbc.Button("Настройки", id='btn_settings', n_clicks=0, 
+            #     style={'width': '100%', 'backgroundColor': 'Green', 'border': 'None'}),
+            html.Img(src='assets/baseline_more_vert_white.png', id='btn_settings', n_clicks=0),
             dbc.Modal(
                 [
                     dbc.ModalHeader(dbc.ModalTitle("Настройки дашборда")),
@@ -35,7 +36,9 @@ btn_settings = [
         ]
 
 #  Кнопка ОБНОВИТЬ ДАННЫЕ
-btn_update_data = dbc.Button(
-                            "Обновить данные", id='btn_update_data', className="ms-auto", n_clicks=0, 
-                                style={'width': '100%', 'backgroundColor': 'LightSalmon', 'border': 'None'}
-                        )
+# btn_update_data = dbc.Button(
+#                             "Обновить данные", id='btn_update_data', className="ms-auto", n_clicks=0, 
+#                                 style={'width': '100%', 'backgroundColor': 'LightSalmon', 'border': 'None'}
+#                         )
+
+btn_update_data = html.Img(src='assets/baseline_refresh_white.png', id='btn_update_data', n_clicks=0)

@@ -20,5 +20,5 @@ def update_pie_device(df, filter_values_list, n):
         (df['device'].isin(filter_device)) & 
         (df['country'].isin(filter_country))
         ]
-    figure = px.pie(df_pie, values='cnt', names='device', title='Устройства пользователей', height=345)
+    figure = px.pie(df_pie, values='cnt', names='device', title='Устройства пользователей', height=335)
     return figure

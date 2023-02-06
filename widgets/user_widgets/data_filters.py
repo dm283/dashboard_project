@@ -3,7 +3,7 @@ from dash import dcc, html
 # FILTERS
 data_filter = {}
 # filter 1
-data_filter[0] = [html.H6('Тип устройства пользователя', className='filter_label'),
+data_filter[0] = ['Тип устройства пользователя',
                 dcc.Dropdown(
                     options=['desktop', 'mobile'], 
                     value=None, 
@@ -13,7 +13,7 @@ data_filter[0] = [html.H6('Тип устройства пользователя'
                     id={'type': 'filter_dropdown', 'index': 'filter_device'}
                     )]
 # filter 2
-data_filter[1] = [html.H6('Страна пользователя', className='filter_label'),
+data_filter[1] = ['Страна пользователя',
                 dcc.Dropdown(
                     options=['India', 'Russia', 'England', 'US', 'Japan', 'China', 'Australia', 'Canada'], 
                     value=None, 
@@ -23,7 +23,7 @@ data_filter[1] = [html.H6('Страна пользователя', className='fi
                     id={'type': 'filter_dropdown', 'index': 'filter_country'}
                     )]
 # filter 3
-data_filter[2] = [html.H6('Веб-сервис', className='filter_label'),
+data_filter[2] = ['Веб-сервис',
                 dcc.Dropdown(
                     options=['aDashboard', 'aMessenger'], 
                     value='aDashboard', 
@@ -32,3 +32,34 @@ data_filter[2] = [html.H6('Веб-сервис', className='filter_label'),
                     className='filter_dropdown', 
                     id={'type': 'filter_dropdown', 'index': 'filter_web_service'}
                     )]
+
+# # filter 4
+# data_filter[3] = ['Веб-сервис',
+#                 dcc.Dropdown(
+#                     options=['aDashboard', 'aMessenger'], 
+#                     value='aDashboard', 
+#                     placeholder="Выберите веб-сервис", 
+#                     clearable=False,
+#                     className='filter_dropdown', 
+#                     id={'type': 'filter_dropdown', 'index': 'filter_web_service1'}
+#                     )]
+# # filter 5
+# data_filter[4] = ['Веб-сервис',
+#                 dcc.Dropdown(
+#                     options=['aDashboard', 'aMessenger'], 
+#                     value='aDashboard', 
+#                     placeholder="Выберите веб-сервис", 
+#                     clearable=False,
+#                     className='filter_dropdown', 
+#                     id={'type': 'filter_dropdown', 'index': 'filter_web_service2'}
+#                     )]
+# # filter 6
+# data_filter[5] = ['Веб-сервис',
+#                 dcc.Dropdown(
+#                     options=['aDashboard', 'aMessenger'], 
+#                     value='aDashboard', 
+#                     placeholder="Выберите веб-сервис", 
+#                     clearable=False,
+#                     className='filter_dropdown', 
+#                     id={'type': 'filter_dropdown', 'index': 'filter_web_service3'}
+#                     )]

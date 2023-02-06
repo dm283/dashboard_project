@@ -21,6 +21,6 @@ def update_bar_country(df, filter_values_list, n):
         (df['country'].isin(filter_country))
         ]
 
-    figure = px.bar(df_bar, y='country', x='cnt', title='Страны пользователей', height=345)
+    figure = px.bar(df_bar, y='country', x='cnt', title='Страны пользователей', height=335)
     
     return figure

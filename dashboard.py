@@ -28,7 +28,10 @@ widgets_area = markup.widgets_area
 filters_area = []
 for k in range(len(data_filter)):
     filters_area.append(
-        dbc.Row( html.Div( data_filter[k], className='widget_cell_grid_div' ), className='widget_cell_grid' )
+        dbc.Col( data_filter[k],   # html.Div( data_filter[k], className='widget_cell_grid_div' )
+                className='widget_cell_grid', 
+                style={'padding': '0px 5px 2px 5px'},  #'backgroundColor': 'orange', 
+                width=2 )
     )
 
 #  Загрузка objects - callback функции формирования/обновления виджетов
@@ -57,28 +60,27 @@ app.title = 'Altasoft | Dashboard | Мониторинг загруженнос�
 app.layout = html.Div([
     #  ОБЛАСТЬ ШАПКИ ДАШБОРДА
     html.Header(children=[
-        html.Span('Altasoft', className='header_1'),
-        html.Span('Dashboard', className='header_2'),
-        html.Span('Мониторинг загруженности веб-сервисов', className='header_3'),
-        html.Span(update_date, id='update_date', className='update_date')
+        html.Span('Altasoft', className='header_title', style={'marginLeft': '30px'}),
+        html.Span('Dashboard', className='header_title'),
+        html.Span('Мониторинг загруженности веб-сервисов', className='header_title', style={'border': 'None', 'width': '66%'}),
+        html.Span(update_date, id='update_date', className='update_date'),
+        html.Span(btn_update_data, className='header_icon', style={'marginLeft': '20px'}), 
+        html.Span(btn_settings, className='header_icon', style={'marginLeft': '5px'})
         ], className='header'),
+
+    #  ОБЛАСТЬ ФИЛЬТРОВ
+    dbc.Row( filters_area, style={'margin': '0px 0px 1px 0px', 'backgroundColor': 'MediumOrchid'} ),
 
     dbc.Row([
         #  **********  ОБЛАСТЬ ВИДЖЕТОВ УПРАВЛЕНИЯ ДАШБОРДОМ
-        dbc.Col([
-            #  Область кнопок настроек и обновления данных
-            dbc.Row( btn_settings, className='widget_cell_grid' ),
-            dbc.Row( btn_update_data, className='widget_cell_grid' ),
-            ]
-            #  Область фильтров
-            + filters_area,
-            style={'backgroundColor': 'GhostWhite'}, 
-            width=2),
+        # dbc.Col(#filters_area,
+        #         style={'backgroundColor': 'GhostWhite'}, 
+        #         width=2),
         #  **********  ОБЛАСТЬ ВИДЖЕТОВ С ДАННЫМИ (ОСНОВНОЙ КОНТЕНТ ДАШБОРДА)
         dbc.Col(
             widgets_area,
-            style={'backgroundColor': 'GhostWhite', 'padding': '0', 'border': 'None'}, 
-            width=10),
+            style={'backgroundColor': 'GhostWhite', 'padding': '0'}, 
+            width=12),
      
         #  INTERVAL (компонент для периодического обновления данных)
         dcc.Interval(
@@ -119,7 +121,7 @@ def update_data(filter_values_list, n, n_update_btn):
         update_bar_country(df, filter_values_list, n),
         update_scatter_cnt_users(df, filter_values_list, ax_msg, ay_msg, n),
         update_table_details(df, filter_values_list, n),
-        DATA_UPDATE_PERIOD
+        DATA_UPDATE_PERIOD * 1000
     )
 
 @app.callback(
