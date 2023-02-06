@@ -1,10 +1,11 @@
-import plotly.express as px, dash_bootstrap_components as dbc
-from dash import Dash, dcc, html, Input, Output, State, dash_table, ALL
+import dash_bootstrap_components as dbc
+from dash import html
 
-# WIDGETS
+label='Основные показатели'
+
 widget = {}
 
-from objects import (widget_graph_bar_countries, widget_graph_pie_devices, widget_graph_scatter_cnt_users, widget_label_cnt_countries,
+from widgets.user_widgets import (widget_graph_bar_countries, widget_graph_pie_devices, widget_graph_scatter_cnt_users, widget_label_cnt_countries,
     widget_label_cnt_users, widget_label_workload, widget_table_record_details)
 
 widget[0] = widget_label_cnt_users.widget
@@ -16,7 +17,7 @@ widget[5] = widget_graph_scatter_cnt_users.widget
 widget[6] = widget_table_record_details.widget
 
 
-tab_1 = dbc.Row([
+tab_content = dbc.Row([
         dbc.Col([
             dbc.Row([
                 dbc.Col(
@@ -68,21 +69,3 @@ tab_1 = dbc.Row([
             className='widget_cell_grid', style={'backgroundColor': 'Gray'}, width=5),
 
     ], style={'margin': '2px 0px 2px 0px'})
-
-
-tab_2 = dbc.Row([
-    'TAB 2 CONTENT'
-    ], style={'margin': '2px 0px 2px 0px'})
-
-
-#  Формирование области виджетов дашборда
-widgets_area = [
-            dbc.Tabs([
-            dbc.Tab([
-                tab_1,
-                ], label='Основные показатели'),
-            dbc.Tab([
-                tab_2,
-                ], label='Динамика')
-            ]),
-        ]

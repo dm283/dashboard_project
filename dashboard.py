@@ -1,10 +1,12 @@
-import plotly.express as px, dash_bootstrap_components as dbc
-from dash import Dash, dcc, html, Input, Output, State, dash_table, ALL
+import dash_bootstrap_components as dbc
+from dash import Dash, dcc, html, Input, Output, State, ALL
 from datetime import datetime
 
 import functions_library as dfl
-from objects import database_select, data_filters, common_widgets, markup
-from objects import (widget_graph_bar_countries, widget_graph_pie_devices, widget_graph_scatter_cnt_users, widget_label_cnt_countries,
+from widgets import markup
+from widgets.common_widgets import common_widgets
+from widgets.user_widgets import database_select, data_filters
+from widgets.user_widgets import (widget_graph_bar_countries, widget_graph_pie_devices, widget_graph_scatter_cnt_users, widget_label_cnt_countries,
     widget_label_cnt_users, widget_label_workload, widget_table_record_details)
 
 #  Загрузка objects - select from database
@@ -58,7 +60,7 @@ app.layout = html.Div([
         html.Span('Altasoft', className='header_1'),
         html.Span('Dashboard', className='header_2'),
         html.Span('Мониторинг загруженности веб-сервисов', className='header_3'),
-        html.Span(f'Последнее обновление данных: {update_date}', id='update_date', className='update_date')
+        html.Span(update_date, id='update_date', className='update_date')
         ], className='header'),
 
     dbc.Row([
