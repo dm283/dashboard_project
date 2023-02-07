@@ -56,11 +56,13 @@
     padding: 5px;
 }
 
-/* .filter_label {
-    font-size: 14px;
-} */
-
-.filter_dropdown {
-    width: 245px;
-    font-size: 14px;
+.filter_label {
+    font-size: 12px;
+    font-weight: bold;
 }
+
+/* .filter_dropdown {
+    font-size: 12px;
+    height: 20px;
+    line-height: 20px;
+} */

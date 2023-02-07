@@ -30,7 +30,7 @@ for k in range(len(data_filter)):
     filters_area.append(
         dbc.Col( data_filter[k],   # html.Div( data_filter[k], className='widget_cell_grid_div' )
                 className='widget_cell_grid', 
-                style={'padding': '0px 5px 2px 5px'},  #'backgroundColor': 'orange', 
+                style={'padding': '0px 10px 5px 10px', 'border': 'None'},  #'backgroundColor': 'orange',   1px solid black
                 width=2 )
     )
 
@@ -69,7 +69,7 @@ app.layout = html.Div([
         ], className='header'),
 
     #  ОБЛАСТЬ ФИЛЬТРОВ
-    dbc.Row( filters_area, style={'margin': '0px 0px 1px 0px', 'backgroundColor': 'MediumOrchid'} ),
+    dbc.Row( filters_area, style={'margin': '0px 0px 1px 0px', 'backgroundColor': 'DeepSkyBlue'} ),
 
     dbc.Row([
         #  **********  ОБЛАСТЬ ВИДЖЕТОВ УПРАВЛЕНИЯ ДАШБОРДОМ
