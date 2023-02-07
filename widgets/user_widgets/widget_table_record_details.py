@@ -42,7 +42,8 @@ modal_save_table_data = dbc.Modal(
 widget = [ modal_table_record,
            modal_save_table_data,
             html.H6([     
-                html.Img(src='assets/baseline_save_white.png', id='btn_open_modal_save_table_data', n_clicks=0, ),
+                html.Span(html.Img(src='assets/baseline_save_white.png', id='btn_open_modal_save_table_data', n_clicks=0,), 
+                          className='icon_save_table_data'),
                 html.Span('Детализация данных о пользователях онлайн', style={'marginLeft': '110px'}),
                 ], style={'color': 'white', 'backgroundColor': 'None', 'marginBottom': '2px', 'textAlign': 'left'}), 
             dash_table.DataTable(
