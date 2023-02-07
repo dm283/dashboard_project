@@ -3,6 +3,7 @@ from dash import Dash, dcc, html, Input, Output, State, dash_table, ALL
 
 
 id = 'table_details'
+#  Модальное окно с расширенными данными о записи
 modal_table_record = dbc.Modal(
                 [
                     dbc.ModalHeader(dbc.ModalTitle('Детализация данных о пользователях онлайн', style={'fontSize': '20px'})),
@@ -15,22 +16,50 @@ modal_table_record = dbc.Modal(
                 id='modal_table_record',
                 is_open=False
             )
+
+#  Модальное окно сохранения данных таблицы
+modal_save_table_data = dbc.Modal(
+                [
+                    dbc.ModalHeader(dbc.ModalTitle("Сохранение данных таблицы")),
+                    dbc.ModalBody([
+                        dbc.Row([
+                            dbc.Col(dbc.Label("Наименование файла"), width=7),
+                            dbc.Col(dbc.Input(id='input_file_name', type='text'))
+                        ], style={'marginBottom': '5px'}),
+                    ]),
+                    dbc.ModalFooter(html.Div([
+                        dbc.Button("Сохранить", id='btn_modal_save_table_data_save', n_clicks=0,
+                            style={'width': '120px', 'marginRight': '10px'}, color="success"), 
+                        dbc.Button("Закрыть", id='btn_modal_save_table_data_close', n_clicks=0,
+                            style={'width': '120px'}, color="warning" )
+                        ]))
+                ],
+                id='modal_save_table_data',
+                is_open=False
+            )
+
+#  Виджет "Таблица"
 widget = [ modal_table_record,
-                html.H6('Детализация данных о пользователях онлайн', style={'color': 'white'}),
-                dash_table.DataTable(
-                    columns=[{"name": i, "id": i} for i in ['user_id', 'device', 'country', 'sign_date']],
-                    style_cell = {'font_size': '10px', 'textAlign': 'center'},
-                    page_action='none',
-                    style_table={'height': '657px', 'overflowY': 'auto'},
-                    style_header={'backgroundColor': 'Black', 'color': 'white'},
-                    style_data={'backgroundColor': 'DarkSlateGray', 'color': 'white'},
-                    id=id
-                    ),
-                 ]
+           modal_save_table_data,
+            html.H6([     
+                html.Img(src='assets/baseline_save_white.png', id='btn_open_modal_save_table_data', n_clicks=0, ),
+                html.Span('Детализация данных о пользователях онлайн', style={'marginLeft': '110px'}),
+                ], style={'color': 'white', 'backgroundColor': 'None', 'marginBottom': '2px', 'textAlign': 'left'}), 
+            dash_table.DataTable(
+                columns=[{"name": i, "id": i} for i in ['user_id', 'device', 'country', 'sign_date']],
+                style_cell = {'font_size': '10px', 'textAlign': 'center'},
+                page_action='none',
+                style_table={'height': '657px', 'overflowY': 'auto'},
+                style_header={'backgroundColor': 'Black', 'color': 'white'},
+                style_data={'backgroundColor': 'DarkSlateGray', 'color': 'white'},
+                id=id
+                ),
+        ]
 
 
 def update_table_details(df, filter_values_list, n):
-    #
+    #  Функция обновления данных таблицы
+    
     devices = ['desktop', 'mobile']
     countries = ['India', 'Russia', 'England', 'US', 'Japan', 'China', 'Australia', 'Canada']
 

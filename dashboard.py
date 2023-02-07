@@ -1,4 +1,4 @@
-import dash_bootstrap_components as dbc
+import dash_bootstrap_components as dbc, pandas as pd
 from dash import Dash, dcc, html, Input, Output, State, ALL
 from datetime import datetime
 
@@ -20,6 +20,7 @@ data_filter = data_filters.data_filter
 btn_settings = common_widgets.btn_settings
 btn_update_data = common_widgets.btn_update_data
 DATA_UPDATE_PERIOD = common_widgets.DATA_UPDATE_PERIOD
+BNT_SAVE_TABLE_DATA = 0 #########
 
 #  Загрузка objects - markup
 widgets_area = markup.widgets_area
@@ -143,6 +144,7 @@ def toggle_modal(n1, n2, is_open, n, period_value):
 
     if n1 or n2:
         return not is_open
+    
     return is_open
 
 
@@ -175,6 +177,35 @@ def toggle_modal_table_records(active_cell, data, n_close, is_open):
         return not is_open, content, None
 
     return is_open, content, active_cell
+
+
+@app.callback(
+    Output('modal_save_table_data', 'is_open'),
+    #Output('btn_modal_save_table_data_save', 'n_clicks'),
+    [Input('btn_open_modal_save_table_data', 'n_clicks'), Input('btn_modal_save_table_data_close', 'n_clicks')],
+    State('modal_save_table_data', 'is_open'),
+    Input('btn_modal_save_table_data_save', 'n_clicks'),
+    State('table_details', 'data'),
+    State('input_file_name', 'value')
+)
+def toggle_modal_save_table_data(n1, n2, is_open, n, data, file_name):
+    #  Открывает/закрывает модальное окно сохранения данных таблицы
+    global BNT_SAVE_TABLE_DATA
+
+    if BNT_SAVE_TABLE_DATA < n:
+        try:
+            df = pd.DataFrame(data)
+            file_name = f'saved_files/{file_name}.xlsx'
+            df.to_excel(file_name)
+            print(f'Data save in {file_name}')
+            BNT_SAVE_TABLE_DATA = n
+        except Exception as ex:
+            print(ex)
+
+    if n1 or n2:
+        return not is_open
+    
+    return is_open
 
 
 
