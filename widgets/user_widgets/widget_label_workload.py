@@ -3,8 +3,9 @@ from dash import dcc, html
 id = 'label_workload'
 widget = [ html.H1(style={'color': 'DarkBlue'}, id=id), html.H6('Уровень загруженности') ]
 
+widget_update_data_type = 'children'
 
-def update_label_workload(df, filter_values_list, n):
+def widget_update(df, filter_values_list, n):
     # 
     devices = ['desktop', 'mobile']
     countries = ['India', 'Russia', 'England', 'US', 'Japan', 'China', 'Australia', 'Canada']

@@ -2,11 +2,12 @@ from dash import dcc, html
 import plotly.express as px, dash_bootstrap_components as dbc
 
 
-id = 'bar_country'
+id = 'graph_bar_countries' #'bar_country'
 widget = dcc.Graph(id=id)
 
+widget_update_data_type = 'figure'
 
-def update_bar_country(df, filter_values_list, n):
+def widget_update(df, filter_values_list, n):
     #
     devices = ['desktop', 'mobile']
     countries = ['India', 'Russia', 'England', 'US', 'Japan', 'China', 'Australia', 'Canada']
