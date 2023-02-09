@@ -11,7 +11,6 @@ data_filter[0] = [html.Div('Тип устройства пользователя
                     clearable=True,
                     className='filter_dropdown', 
                     id={'type': 'filter_dropdown', 'index': 'filter_device'},
-                    #style={'width': '100%', 'height': '20px', 'display': 'inline-block'},
                     )]
 # filter 2
 data_filter[1] = [html.Div('Страна пользователя', className='filter_label'),
@@ -22,7 +21,6 @@ data_filter[1] = [html.Div('Страна пользователя', className='f
                     clearable=True,
                     className='filter_dropdown', 
                     id={'type': 'filter_dropdown', 'index': 'filter_country'},
-                    #style={'width': '100%', 'display': 'inline-block'},  #'height': '20px', 
                     )]
 # filter 3
 data_filter[2] = [html.Div('Веб-сервис', className='filter_label'),
@@ -33,7 +31,6 @@ data_filter[2] = [html.Div('Веб-сервис', className='filter_label'),
                     clearable=False,
                     className='filter_dropdown', 
                     id={'type': 'filter_dropdown', 'index': 'filter_web_service'},
-                    #style={'width': '100%', 'height': '20px', 'display': 'inline-block'},
                     )]
 
 # # filter 4

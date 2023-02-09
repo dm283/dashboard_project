@@ -73,10 +73,6 @@ app.layout = html.Div([
     dbc.Row( filters_area, style={'margin': '0px 0px 1px 0px', 'backgroundColor': 'DeepSkyBlue'} ),
 
     dbc.Row([
-        #  **********  ОБЛАСТЬ ВИДЖЕТОВ УПРАВЛЕНИЯ ДАШБОРДОМ
-        # dbc.Col(#filters_area,
-        #         style={'backgroundColor': 'GhostWhite'}, 
-        #         width=2),
         #  **********  ОБЛАСТЬ ВИДЖЕТОВ С ДАННЫМИ (ОСНОВНОЙ КОНТЕНТ ДАШБОРДА)
         dbc.Col(
             widgets_area,
@@ -181,7 +177,6 @@ def toggle_modal_table_records(active_cell, data, n_close, is_open):
 
 @app.callback(
     Output('modal_save_table_data', 'is_open'),
-    #Output('btn_modal_save_table_data_save', 'n_clicks'),
     [Input('btn_open_modal_save_table_data', 'n_clicks'), Input('btn_modal_save_table_data_close', 'n_clicks')],
     State('modal_save_table_data', 'is_open'),
     Input('btn_modal_save_table_data_save', 'n_clicks'),
@@ -197,7 +192,6 @@ def toggle_modal_save_table_data(n1, n2, is_open, n, data, file_name):
             df = pd.DataFrame(data)
             file_name = f'saved_files/{file_name}.xlsx'
             df.to_excel(file_name)
-            print(f'Data save in {file_name}')
             BNT_SAVE_TABLE_DATA = n
         except Exception as ex:
             print(ex)
