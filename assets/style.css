@@ -1,34 +1,43 @@
 .header {
     background-color: DarkCyan;
-    padding: 10px;
+    padding: 7px 7px 13px 7px;
     color: white;
 }
 
-.header_1 {
-    margin-left: 30px;
+.header_title {
     padding: 0px 15px 0px 15px;
     font-size: 20px;
     border-right: 1px solid white;
+    display: inline-block;
 }
 
-.header_2 {
-    padding: 0px 15px 0px 15px;
-    font-size: 20px;
-    border-right: 1px solid white;
+.header_icon {
+    background-color: MediumSlateBlue; 
+    margin: 0px 0px 0px 20px;
+    padding: 5px 7px 10px 7px;
+    border-radius: 30px;
 }
 
-.header_3 {
-    padding: 0px 15px 0px 15px;
-    font-size: 20px;
+.header_icon:hover {
+    background-color: SlateBlue; 
 }
 
-.update_date {
-    margin: 4px 0px 0px 450px;
+.header_icon:active {
+    background-color: Indigo; 
 }
 
-.widget_cell_grid_div {
-    background-color: Grey; 
-    border-radius: 5px; 
+.icon_save_table_data {
+    background-color: SeaGreen; 
+    padding-bottom: 4px;
+    border-radius: 3px;
+}
+
+.icon_save_table_data:hover {
+    background-color: MediumSeaGreen; 
+}
+
+.icon_save_table_data:active {
+    background-color: ForestGreen; 
 }
 
 .widget_cell_grid_div_label {
@@ -38,12 +47,20 @@
     padding-bottom: 1px;
 }
 
+.widget_cell_grid_div_label:hover {
+    background-color: GhostWhite;
+}
+
 .widget_cell_grid_div_graph {
-    background-color: white; 
+    /* background-color: Red;  */
     border-radius: 5px; 
     text-align: center;
     padding: 1px;
 }
+
+/* .widget_cell_grid_div_graph {
+    background-color: GhostWhite;
+} */
 
 .widget_cell_grid_div_table {
     background-color: DarkSlateGray; 
@@ -57,12 +74,12 @@
 }
 
 .filter_label {
-    margin-top: 5px; 
-    font-size: 14px;
+    font-size: 12px;
+    font-weight: bold;
 }
 
-.filter_dropdown {
-    margin-bottom: 10px; 
-    width: 220px;
-    font-size: 14px;
-}
+/* .filter_dropdown {
+    font-size: 12px;
+    height: 20px;
+    line-height: 20px;
+} */
