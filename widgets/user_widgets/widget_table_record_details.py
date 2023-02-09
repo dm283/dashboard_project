@@ -2,7 +2,7 @@ import plotly.express as px, dash_bootstrap_components as dbc
 from dash import Dash, dcc, html, Input, Output, State, dash_table, ALL
 
 
-id = 'table_details'
+id = 'table_record_details'
 #  Модальное окно с расширенными данными о записи
 modal_table_record = dbc.Modal(
                 [
@@ -57,8 +57,9 @@ widget = [ modal_table_record,
                 ),
         ]
 
+widget_update_data_type = 'data'
 
-def update_table_details(df, filter_values_list, n):
+def widget_update(df, filter_values_list, n):
     #  Функция обновления данных таблицы
     
     devices = ['desktop', 'mobile']

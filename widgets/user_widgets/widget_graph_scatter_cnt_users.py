@@ -3,11 +3,11 @@ import plotly.express as px, dash_bootstrap_components as dbc
 from datetime import datetime
 
 
-id = 'scatter_cnt_users'
+id = 'graph_scatter_cnt_users' #'scatter_cnt_users'
 widget = dcc.Graph(id=id)
+widget_update_data_type = 'figure'
 
-
-def update_scatter_cnt_users(df, filter_values_list, ax_msg, ay_msg, n):
+def widget_update(df, filter_values_list, ax_msg, ay_msg, n):
     #
 
     devices = ['desktop', 'mobile']
