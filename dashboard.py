@@ -2,39 +2,21 @@ import os, dash_bootstrap_components as dbc, pandas as pd
 from dash import Dash, dcc, html, Input, Output, State, ALL
 from datetime import datetime
 
-import functions_library as dfl
-from widgets import dashboard_tabs
+import functions_library as dfl, content_create_functions as ccf
 from widgets.common_widgets import common_widgets
-from widgets.user_widgets import database_select, data_filters, dashboard_header
+from widgets.user_widgets import database_select, dashboard_header
+
 
 #  Импортирование элементов дашборда
 select = database_select.select # sql-запрос к базе данных
 column_names = database_select.column_names # наименования полей pandas-датафрейма
-data_filter = data_filters.data_filter  # фильтры данных
 DATA_UPDATE_PERIOD = common_widgets.DATA_UPDATE_PERIOD  # период обновления данных
 header = dashboard_header.header    # шапка дашборда
-widgets_area = dashboard_tabs.widgets_area  # область вкладок с виджетами (основной контент)
+widgets_area = ccf.create_widgets_area()    # Формирование вкладок
+filters_area = ccf.create_filters_area()    # Формирование области фильтров данных
+widget_update, widget_update_data_type, output_list, widget_list = ccf.create_widget_dictionary()[2:6]  #  Импортирование callback-функций
 
-#  Формирование области виджетов "фильтры"
-filters_area = []
-for k in range(len(data_filter)):
-    filters_area.append(
-        dbc.Col( data_filter[k],
-                className='widget_cell_grid', 
-                style={'padding': '0px 10px 5px 10px', 'border': 'None'},
-                width=2 )
-    )
-
-#  Импортирование callback-функций формирования/обновления виджетов
-widget_list = [w.partition('.')[0] for w in os.listdir('widgets/user_widgets') if w.startswith('widget_')]
-widget_update = {}  # Набор функций формирования/обновления виджетов
-widget_update_data_type = {}  # Набор типов данных, возвращаемых функцией формирования/обновления
-for w in widget_list:
-    import_name = __import__('widgets.user_widgets.' + w, fromlist=[w])
-    widget_key = w.replace('widget_', '')
-    widget_update[widget_key] = import_name.widget_update
-    widget_update_data_type[widget_key] = import_name.widget_update_data_type
-
+#  Глобальные переменные и константы
 BNT_SAVE_TABLE_DATA = 0 # хранение кол-ва кликов на кнопке сохранения данных таблицы
 ax_msg, ay_msg = [], []  # массивы хранения кол-ва пользователей для виджета scatter
 
@@ -61,16 +43,8 @@ app.layout = html.Div([
 
 
 # *************************** CALLBACKS ******************************************************
-def create_output_widget_id_list() -> list:
-    #  Формирует список Output содержащий id всех виджетов в нужном порядке - для @app.callback обновления всех виджетов
-    output_list = []
-    for w in widget_list:
-        widget_key = w.replace('widget_', '')
-        output_list.append( Output(widget_key, widget_update_data_type[widget_key]) )
-    return output_list
-
 @app.callback(
-    create_output_widget_id_list(),
+    output_list,
     Output('interval_component', 'interval'),
     Output('update_date', 'children'),
     Input({'type': 'filter_dropdown', 'index': ALL}, 'value'),  #  список значений всех фильтров

@@ -1,6 +1,7 @@
 from dash import dcc, html
 import plotly.express as px, dash_bootstrap_components as dbc
 
+#  ЗАПОЛНЯЕТСЯ ПРИКЛАДНЫМ ПРОГРАММИСТОМ
 
 id = 'graph_bar_countries'
 widget = dcc.Graph(id=id)
