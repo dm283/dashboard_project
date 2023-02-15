@@ -1,5 +1,6 @@
 import os, dash_bootstrap_components as dbc, pandas as pd
 from dash import Dash, dcc, html, Input, Output, State, ALL
+from datetime import datetime
 
 import functions_library as dfl
 from widgets import dashboard_tabs
@@ -71,6 +72,7 @@ def create_output_widget_id_list() -> list:
 @app.callback(
     create_output_widget_id_list(),
     Output('interval_component', 'interval'),
+    Output('update_date', 'children'),
     Input({'type': 'filter_dropdown', 'index': ALL}, 'value'),  #  список значений всех фильтров
     Input('interval_component', 'n_intervals'),
     Input('btn_update_data', 'n_clicks')
@@ -82,6 +84,8 @@ def update_data(filter_values_list, n, n_update_btn):
     #  Загрузка датафрейма
     df = dfl.get_db_data_to_datafame(conn, select, column_names); df['cnt'] = 1
 
+    update_date = datetime.now().strftime('%d-%m-%Y %H:%M:%S')
+
     #  Динамическое формирование набора функций обновлений виджетов
     return_functions = []
     for w in widget_list:
@@ -91,7 +95,7 @@ def update_data(filter_values_list, n, n_update_btn):
         else:
             return_functions.append( widget_update[widget_key](df, filter_values_list, n) )
 
-    return return_functions + [ DATA_UPDATE_PERIOD * 1000 ]
+    return return_functions + [ DATA_UPDATE_PERIOD * 1000 ] + [ update_date ]
 
 
 @app.callback(

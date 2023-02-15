@@ -1,12 +1,14 @@
 from dash import dcc, html
+import plotly.express as px, dash_bootstrap_components as dbc
+
 
 id = 'label_cnt_countries'
 widget = [ html.H1(style={'color': 'DarkBlue'}, id=id), html.H6('Представлено стран') ]
-
 widget_update_data_type = 'children'
 
+
 def widget_update(df, filter_values_list, n):
-    #
+    #  Функция формирования/обновления виджета
     devices = ['desktop', 'mobile']
     countries = ['India', 'Russia', 'England', 'US', 'Japan', 'China', 'Australia', 'Canada']
     

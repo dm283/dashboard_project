@@ -1,7 +1,7 @@
 #  Общие виджеты для всех типовых дашбордов
 
 import plotly.express as px, dash_bootstrap_components as dbc
-from dash import Dash, dcc, html, Input, Output, State, dash_table, ALL
+from dash import dcc, html, dash_table
 
 DATA_UPDATE_PERIOD = 10
 
