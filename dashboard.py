@@ -12,11 +12,11 @@ select = database_select.select # sql-запрос к базе данных
 column_names = database_select.column_names # наименования полей pandas-датафрейма
 DATA_UPDATE_PERIOD = common_widgets.DATA_UPDATE_PERIOD  # период обновления данных
 header = dashboard_header.header    # шапка дашборда
-widgets_area = ccf.create_widgets_area()    # Формирование вкладок
 filters_area = ccf.create_filters_area()    # Формирование области фильтров данных
 widget_update, widget_update_data_type, output_list, widget_list = ccf.create_widget_dictionary()[2:6]  #  Импортирование callback-функций
 
 #  Глобальные переменные и константы
+USER = str()
 BNT_SAVE_TABLE_DATA = 0 # хранение кол-ва кликов на кнопке сохранения данных таблицы
 ax_msg, ay_msg = [], []  # массивы хранения кол-ва пользователей для виджета scatter
 
@@ -30,19 +30,67 @@ app.title = 'Altasoft | Dashboard | Мониторинг загруженнос�
 
 # *************************** LAYOUT *********************************************************
 app.layout = html.Div([
-    #  ОБЛАСТЬ ШАПКИ ДАШБОРДА
-    html.Header( header, className='header' ),
-    #  ОБЛАСТЬ ФИЛЬТРОВ
-    dbc.Row( filters_area, style={'margin': '0px 0px 1px 0px', 'backgroundColor': 'DeepSkyBlue'} ),
-    #  ОБЛАСТЬ ВИДЖЕТОВ С ДАННЫМИ (ОСНОВНОЙ КОНТЕНТ ДАШБОРДА)
-    dbc.Row([ 
-        dbc.Col( widgets_area, style={'backgroundColor': 'GhostWhite', 'padding': '0'}, width=12),
-        dcc.Interval( id='interval_component', n_intervals=0)   #  Компонент для периодического обновления данных
-        ], style={'margin': '2px'})
-    ])
-
+                dcc.Location(id='url', refresh=False),
+                html.Div(id='page_content')
+                ])
 
 # *************************** CALLBACKS ******************************************************
+@app.callback(
+        Output('page_content', 'children'),
+        Input('url', 'pathname')
+        )
+def display_page(pathname):
+    #  Роутинг страниц
+    if pathname == '/dashboard_page':
+        #  СТРАНИЦА ДАШБОРДА
+        widgets_area = ccf.create_widgets_area(USER)
+        dashboard_page = html.Div([
+            #  ОБЛАСТЬ ШАПКИ ДАШБОРДА
+            html.Header( header, className='header' ),
+            #  ОБЛАСТЬ ФИЛЬТРОВ
+            dbc.Row( filters_area, className='filters_area' ),
+            #  ОБЛАСТЬ ВИДЖЕТОВ С ДАННЫМИ (ОСНОВНОЙ КОНТЕНТ ДАШБОРДА)
+            dbc.Row([ 
+                dbc.Col( widgets_area, style={'backgroundColor': 'GhostWhite', 'padding': '0'}, width=12),
+                dcc.Interval( id='interval_component', n_intervals=0)   #  Компонент для периодического обновления данных
+                ], style={'margin': '2px'})
+            ])
+
+        return dashboard_page
+    
+    elif pathname == '/':
+        #  СТРАНИЦА ВХОДА
+        sign_in_page = html.Div([
+            dbc.Label('Пользователь', className='auth_form_label'), dbc.Input(id='user_input', type='text', className='auth_form_input'),
+            dbc.Label('Пароль', className='auth_form_label'), dbc.Input(id='password_input', type='text', className='auth_form_input'),
+            html.Button('Вход', id='btn_sign_in', n_clicks=0, className='auth_form_btn'),
+            html.Div(id='sign_in_page_output', className='auth_form_output')
+        ], className='auth_form')
+
+        return sign_in_page
+    
+
+@app.callback(
+    Output('sign_in_page_output', 'children'),
+    Input('btn_sign_in', 'n_clicks'),
+    State('user_input', 'value'), State('password_input', 'value')
+    )
+def update_output(n_clicks, user_input, password_input):
+    #  Валидация логин/пароль
+    global USER
+
+    li={'user1': 'u1',
+        'user2': 'u2',
+        'user3': 'u3',}
+    if not user_input and not password_input:
+        return ''
+    if user_input in li and li[user_input] == password_input:
+        USER = user_input
+        return dcc.Link('Зайти в дашборд', href='/dashboard_page')
+    else:
+        return 'Некорректный логин или пароль.'
+
+
 @app.callback(
     output_list,
     Output('interval_component', 'interval'),

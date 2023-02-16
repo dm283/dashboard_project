@@ -42,3 +42,6 @@ btn_settings = [
 #                         )
 
 btn_update_data = html.Img(src='assets/baseline_refresh_white.png', id='btn_update_data', n_clicks=0)
+
+btn_user_actions = dcc.Link(html.Img(src='assets/baseline_logout_white.png', id='btn_user_actions', n_clicks=0), 
+                            href='/')

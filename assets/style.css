@@ -1,5 +1,44 @@
+.auth_form {
+    margin: 50px auto auto auto;
+    background-color: WhiteSmoke;
+    border: 1px solid Gainsboro;
+    border-radius: 10px;
+    width: 330px;
+    padding: 20px;
+}
+
+.auth_form_input {
+    width: 290px;
+    margin-bottom: 15px;
+}
+
+.auth_form_btn {
+    margin-top: 10px;
+    width: 290px;
+    height: 35px;
+    background-color: MediumSeaGreen;
+    border-radius: 5px;
+    border: None;
+    color: white;
+}
+
+.auth_form_btn:hover {
+    background-color: SeaGreen;
+}
+
+.auth_form_btn:active {
+    background-color: MediumSeaGreen;
+}
+
+.auth_form_output{
+    margin-top: 10px;
+    min-height: 27px;
+    text-align: center;
+    color: rosybrown;
+}
+
 .header {
-    background-color: DarkCyan;
+    background-color: RoyalBlue;
     padding: 7px 7px 13px 7px;
     color: white;
 }
@@ -12,18 +51,18 @@
 }
 
 .header_icon {
-    background-color: MediumSlateBlue; 
+    background-color: RoyalBlue; 
     margin: 0px 0px 0px 20px;
     padding: 5px 7px 10px 7px;
     border-radius: 30px;
 }
 
 .header_icon:hover {
-    background-color: SlateBlue; 
+    background-color: DodgerBlue; 
 }
 
 .header_icon:active {
-    background-color: Indigo; 
+    background-color: RoyalBlue; 
 }
 
 .icon_save_table_data {
@@ -40,6 +79,11 @@
     background-color: ForestGreen; 
 }
 
+.filters_area {
+    margin: 0px 0px 1px 0px;
+    background-color: PaleVioletRed;
+}
+
 .widget_cell_grid_div_label {
     background-color: white; 
     border-radius: 5px; 
@@ -52,15 +96,10 @@
 }
 
 .widget_cell_grid_div_graph {
-    /* background-color: Red;  */
     border-radius: 5px; 
     text-align: center;
     padding: 1px;
 }
-
-/* .widget_cell_grid_div_graph {
-    background-color: GhostWhite;
-} */
 
 .widget_cell_grid_div_table {
     background-color: DarkSlateGray; 
@@ -77,9 +116,3 @@
     font-size: 12px;
     font-weight: bold;
 }
-
-/* .filter_dropdown {
-    font-size: 12px;
-    height: 20px;
-    line-height: 20px;
-} */
