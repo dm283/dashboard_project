@@ -8,12 +8,16 @@ from widgets.user_widgets import database_select, dashboard_header
 
 
 #  Импортирование элементов дашборда
-select = database_select.select # sql-запрос к базе данных
-column_names = database_select.column_names # наименования полей pandas-датафрейма
+# select = database_select.select # sql-запрос к базе данных
+# column_names = database_select.column_names # наименования полей pandas-датафрейма
+
+select_query = database_select.select_query
+select_columns = database_select.select_columns
+
 DATA_UPDATE_PERIOD = common_widgets.DATA_UPDATE_PERIOD  # период обновления данных
 header = dashboard_header.header    # шапка дашборда
 # filters_area = ccf.create_filters_area()    # Формирование области фильтров данных
-widget_update, widget_update_data_type, output_list, widget_list = ccf.create_widget_dictionary()[2:6]  #  Импортирование callback-функций
+widget_update, widget_update_data_type, output_list, widget_list, widget_select_index = ccf.create_widget_dictionary()[2:7]  #  Импортирование callback-функций
 
 try:
     #  при отсутствии файла с пользователями вход без страницы аутентификации
@@ -110,7 +114,13 @@ def update_data(filter_values_list, n, n_update_btn):
     global ax_msg, ay_msg
 
     #  Загрузка датафрейма
-    df = dfl.get_db_data_to_datafame(conn, select, column_names); df['cnt'] = 1
+    #  df = dfl.get_db_data_to_datafame(conn, select, column_names); df['cnt'] = 1
+
+    df = {}
+    for s in select_query.keys():
+        df[s] = dfl.get_db_data_to_datafame(conn, select_query[s], select_columns[s])
+        df[s]['cnt'] = 1
+
 
     update_date = datetime.now().strftime('%d-%m-%Y %H:%M:%S')
 
@@ -119,9 +129,19 @@ def update_data(filter_values_list, n, n_update_btn):
     for w in widget_list:
         widget_key = w.replace('widget_', '')
         if widget_key == 'graph_scatter_cnt_users':
-            return_functions.append( widget_update[widget_key](df, filter_values_list, ax_msg, ay_msg, n) )
+            return_functions.append( 
+                widget_update[widget_key](
+                    df[widget_select_index[widget_key]], 
+                    filter_values_list, ax_msg, ay_msg, n
+                    ) 
+                )
         else:
-            return_functions.append( widget_update[widget_key](df, filter_values_list, n) )
+            return_functions.append( 
+                widget_update[widget_key](
+                    df[widget_select_index[widget_key]],
+                    filter_values_list, n
+                    ) 
+                )
 
     return return_functions + [ DATA_UPDATE_PERIOD * 1000 ] + [ update_date ]
 
@@ -194,9 +214,9 @@ def toggle_modal_save_table_data(n1, n2, is_open, n, data, file_name):
 
     if BNT_SAVE_TABLE_DATA < n:
         try:
-            df = pd.DataFrame(data)
+            df_data = pd.DataFrame(data)
             file_name = f'saved_files/{file_name}.xlsx'
-            df.to_excel(file_name)
+            df_data.to_excel(file_name)
             BNT_SAVE_TABLE_DATA = n
         except Exception as ex:
             print(ex)
@@ -213,6 +233,7 @@ def toggle_modal_save_table_data(n1, n2, is_open, n, data, file_name):
     [State("offcanvas_filters", "is_open")],
 )
 def toggle_offcanvas_filters(n1, is_open):
+    #  Открывает/закрывает область фильтров
     if n1:
         return not is_open
     return is_open

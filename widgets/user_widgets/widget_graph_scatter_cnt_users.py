@@ -6,6 +6,8 @@ from datetime import datetime
 id = 'graph_scatter_cnt_users' #'scatter_cnt_users'
 widget = dcc.Graph(id=id)
 widget_update_data_type = 'figure'
+widget_select_index = 0
+
 
 def widget_update(df, filter_values_list, ax_msg, ay_msg, n):
     #

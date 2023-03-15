@@ -4,8 +4,9 @@ import plotly.express as px, dash_bootstrap_components as dbc
 
 id = 'graph_pie_devices' #'pie_device'
 widget = dcc.Graph(id=id)
-
 widget_update_data_type = 'figure'
+widget_select_index = 0
+
 
 def widget_update(df, filter_values_list, n):
     #

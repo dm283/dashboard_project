@@ -58,8 +58,6 @@ widget = [ modal_table_record,
         ]
 
 widget_update_data_type = 'data'
-widget_select_index = 0
-
 
 def widget_update(df, filter_values_list, n):
     #  Функция обновления данных таблицы
