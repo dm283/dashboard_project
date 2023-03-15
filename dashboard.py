@@ -61,8 +61,8 @@ def display_page(pathname):
     elif pathname == '/':
         #  СТРАНИЦА ВХОДА
         sign_in_page = html.Div([
-            dbc.Label('Пользователь', className='auth_form_label'), dbc.Input(id='user_input', type='text', className='auth_form_input'),
-            dbc.Label('Пароль', className='auth_form_label'), dbc.Input(id='password_input', type='text', className='auth_form_input'),
+            dbc.Label('Логин', className='auth_form_label'), dbc.Input(id='user_input', type='text', className='auth_form_input'),
+            dbc.Label('Пароль', className='auth_form_label'), dbc.Input(id='password_input', type='password', className='auth_form_input'),
             html.Button('Вход', id='btn_sign_in', n_clicks=0, className='auth_form_btn'),
             html.Div(id='sign_in_page_output', className='auth_form_output')
         ], className='auth_form')
@@ -82,6 +82,7 @@ def update_output(n_clicks, user_input, password_input):
     li={'user1': 'u1',
         'user2': 'u2',
         'user3': 'u3',}
+    
     if not user_input and not password_input:
         return ''
     if user_input in li and li[user_input] == password_input:

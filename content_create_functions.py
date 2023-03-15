@@ -8,11 +8,10 @@ from widgets.user_tabs_list import tabs_list
 
 def create_widget_dictionary():
     """
-    Создает структуру данных (словарь) с параметрами виджетов,
-    в том числе список Output для callback
+    Создает структуру данных (словарь) с параметрами виджетов, в том числе список Output для callback
     """
-    # widget_list  -  Список файлов с виджетами (widget_*) из директории widgets/user_widgets
-    # widget_update  -  Набор функций формирования/обновления виджетов
+    # widget_list  -  список файлов с виджетами (widget_*) из директории widgets/user_widgets
+    # widget_update  -  набор функций формирования/обновления виджетов
     # widget_update_data_type  -  набор типов данных, возвращаемых функцией формирования/обновления
     
     widget_list = [w.partition('.')[0] for w in os.listdir('widgets/user_widgets') if w.startswith('widget_')]
