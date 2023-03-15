@@ -1,4 +1,4 @@
-import os, dash_bootstrap_components as dbc, pandas as pd
+import os, json, dash_bootstrap_components as dbc, pandas as pd
 from dash import Dash, dcc, html, Input, Output, State, ALL
 from datetime import datetime
 
@@ -15,8 +15,17 @@ header = dashboard_header.header    # шапка дашборда
 filters_area = ccf.create_filters_area()    # Формирование области фильтров данных
 widget_update, widget_update_data_type, output_list, widget_list = ccf.create_widget_dictionary()[2:6]  #  Импортирование callback-функций
 
+try:
+    #  при отсутствии файла с пользователями вход без страницы аутентификации
+    with open('widgets/users_list.json', 'r') as jsonfile:
+        USERS_LIST = json.load(jsonfile)  # type = dict
+    ENTER_VIA_AUTH_PAGE = True    #  Флаг входа через страницу аутентификации
+    USER = str()
+except FileNotFoundError:
+    USER = 'user1'
+    ENTER_VIA_AUTH_PAGE = False
+
 #  Глобальные переменные и константы
-USER = str()
 BNT_SAVE_TABLE_DATA = 0 # хранение кол-ва кликов на кнопке сохранения данных таблицы
 ax_msg, ay_msg = [], []  # массивы хранения кол-ва пользователей для виджета scatter
 
@@ -41,7 +50,7 @@ app.layout = html.Div([
         )
 def display_page(pathname):
     #  Роутинг страниц
-    if pathname == '/dashboard_page':
+    if (not ENTER_VIA_AUTH_PAGE and pathname == '/') or pathname == '/dashboard_page':
         #  СТРАНИЦА ДАШБОРДА
         widgets_area = ccf.create_widgets_area(USER)
         dashboard_page = html.Div([
@@ -58,7 +67,7 @@ def display_page(pathname):
 
         return dashboard_page
     
-    elif pathname == '/':
+    elif ENTER_VIA_AUTH_PAGE and pathname == '/':
         #  СТРАНИЦА ВХОДА
         sign_in_page = html.Div([
             dbc.Label('Логин', className='auth_form_label'), dbc.Input(id='user_input', type='text', className='auth_form_input'),
@@ -78,14 +87,10 @@ def display_page(pathname):
 def update_output(n_clicks, user_input, password_input):
     #  Валидация логин/пароль
     global USER
-
-    li={'user1': 'u1',
-        'user2': 'u2',
-        'user3': 'u3',}
     
     if not user_input and not password_input:
         return ''
-    if user_input in li and li[user_input] == password_input:
+    if user_input in USERS_LIST and USERS_LIST[user_input] == password_input:
         USER = user_input
         return dcc.Link('Зайти в дашборд', href='/dashboard_page')
     else:
