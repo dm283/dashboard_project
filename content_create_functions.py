@@ -8,11 +8,10 @@ from widgets.user_tabs_list import tabs_list
 
 def create_widget_dictionary():
     """
-    Создает структуру данных (словарь) с параметрами виджетов,
-    в том числе список Output для callback
+    Создает структуру данных (словарь) с параметрами виджетов, в том числе список Output для callback
     """
-    # widget_list  -  Список файлов с виджетами (widget_*) из директории widgets/user_widgets
-    # widget_update  -  Набор функций формирования/обновления виджетов
+    # widget_list  -  список файлов с виджетами (widget_*) из директории widgets/user_widgets
+    # widget_update  -  набор функций формирования/обновления виджетов
     # widget_update_data_type  -  набор типов данных, возвращаемых функцией формирования/обновления
     
     widget_list = [w.partition('.')[0] for w in os.listdir('widgets/user_widgets') if w.startswith('widget_')]
@@ -33,21 +32,22 @@ def create_widget_dictionary():
     return widget, widget_id, widget_update, widget_update_data_type, output_list, widget_list
 
 
-def create_widgets_area():
+def create_widgets_area(USER):
     """
-    Формирует вкладки (tabs)
+    Формирует определенные вкладки (tabs) для пользователя (USER)
     """
-    #  tabs_list - список вкладок дашбора
+    #  tabs_list - словарь с ключами из юзеров и значениями с соответствующими списками вкладок дашбора
     #  tabs_labels_list - список ключей/системных наименований вкладок (наименование файла вкладки без префикса tab_)
     #  tab_content - структура данных с контентом вкладок
     #  tab_label - наименования вкладок как они отображаются в дашборде (tabs_labels_list без символов '_')
+    user_tabs_list = tabs_list[USER]
 
-    tabs_labels_list = [ t.partition('_')[2] for t in tabs_list ]
+    tabs_labels_list = [ t.partition('_')[2] for t in user_tabs_list ]
     tab_content, tab_label = {}, {}
 
     #  Импортирование модулей перечисленных в tabs_list (файлы tab_*.py из директории widget/user_tabs) и наполнение tab_content, tab_label
-    for i in range(len(tabs_list)):
-        import_name = __import__('widgets.user_tabs.' + tabs_list[i], fromlist=[tabs_list[i]])
+    for i in range(len(user_tabs_list)):
+        import_name = __import__('widgets.user_tabs.' + user_tabs_list[i], fromlist=[user_tabs_list[i]])
         tab_content[tabs_labels_list[i]] = import_name.tab_content
         #tab_label[tabs_labels_list[i]] = import_name.label # Вариант с указанием наименования вкладка в файле tab_* в переменной label
         tab_label[tabs_labels_list[i]] = tabs_labels_list[i].replace('_', ' ')  # Вариант с наименованием вкладки из имени соответствующего файла
