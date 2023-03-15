@@ -112,7 +112,27 @@
     padding: 5px;
 }
 
-.filter_label {
+
+.filters_area {
+    background-color: White;
+}
+
+/* .filter_label {
     font-size: 12px;
     font-weight: bold;
+} */
+
+.filter_dropdown .Select-control {
+    background-color: White !important;
+    color:white;
+  }
+  
+.filter_dropdown .Select-menu-outer {
+    background-color: White;
+    color: Black;
 }
+
+/* changes the text color of input box */
+/* .filter_dropdown .Select-value-label {
+    color: rgb(37, 224, 37) !important;
+} */

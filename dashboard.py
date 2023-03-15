@@ -12,7 +12,7 @@ select = database_select.select # sql-запрос к базе данных
 column_names = database_select.column_names # наименования полей pandas-датафрейма
 DATA_UPDATE_PERIOD = common_widgets.DATA_UPDATE_PERIOD  # период обновления данных
 header = dashboard_header.header    # шапка дашборда
-filters_area = ccf.create_filters_area()    # Формирование области фильтров данных
+# filters_area = ccf.create_filters_area()    # Формирование области фильтров данных
 widget_update, widget_update_data_type, output_list, widget_list = ccf.create_widget_dictionary()[2:6]  #  Импортирование callback-функций
 
 try:
@@ -57,7 +57,7 @@ def display_page(pathname):
             #  ОБЛАСТЬ ШАПКИ ДАШБОРДА
             html.Header( header, className='header' ),
             #  ОБЛАСТЬ ФИЛЬТРОВ
-            dbc.Row( filters_area, className='filters_area' ),
+            # dbc.Row( filters_area, className='filters_area' ),
             #  ОБЛАСТЬ ВИДЖЕТОВ С ДАННЫМИ (ОСНОВНОЙ КОНТЕНТ ДАШБОРДА)
             dbc.Row([ 
                 dbc.Col( widgets_area, style={'backgroundColor': 'GhostWhite', 'padding': '0'}, width=12),
@@ -206,6 +206,16 @@ def toggle_modal_save_table_data(n1, n2, is_open, n, data, file_name):
     
     return is_open
 
+
+@app.callback(
+    Output("offcanvas_filters", "is_open"),
+    Input("btn_show_filters", "n_clicks"),
+    [State("offcanvas_filters", "is_open")],
+)
+def toggle_offcanvas_filters(n1, is_open):
+    if n1:
+        return not is_open
+    return is_open
 
 
 app.run_server(debug=True)

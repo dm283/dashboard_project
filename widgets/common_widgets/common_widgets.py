@@ -2,6 +2,7 @@
 
 import plotly.express as px, dash_bootstrap_components as dbc
 from dash import dcc, html, dash_table
+from widgets.user_widgets import data_filters
 
 DATA_UPDATE_PERIOD = 10
 
@@ -39,4 +40,26 @@ btn_update_data = html.Img(src='assets/baseline_refresh_white.png', id='btn_upda
 btn_user_actions = dcc.Link(html.Img(src='assets/baseline_logout_white.png', id='btn_user_actions', n_clicks=0), 
                             href='/')
 
-btn_show_filters = html.Img(src='assets/baseline_filter_alt_white.png', id='btn_show_filters', n_clicks=0)
+# Формирование области фильтров
+data_filter = data_filters.data_filter  # фильтры данных
+
+filters_area = []
+for k in range(len(data_filter)):
+    filters_area.append(
+        dbc.Row( data_filter[k],
+                className='widget_cell_grid', 
+                style={'padding': '0px 5px 10px 5px', 'border': 'None'},
+                )
+        )
+
+btn_show_filters = [
+    html.Img(src='assets/baseline_filter_alt_white.png', id='btn_show_filters', n_clicks=0),
+    dbc.Offcanvas(
+            filters_area,
+            id="offcanvas_filters",
+            title="Фильтры данных",
+            placement='end',
+            is_open=False,
+            className='filters_area',
+        ),
+    ]
