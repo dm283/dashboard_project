@@ -97,8 +97,9 @@
 
 .widget_cell_grid_div_graph {
     border-radius: 5px; 
+    background-color: white;
     text-align: center;
-    padding: 1px;
+    padding: 2px;
 }
 
 .widget_cell_grid_div_table {

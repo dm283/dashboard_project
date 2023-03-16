@@ -170,6 +170,18 @@ def toggle_modal(n1, n2, is_open, n, period_value):
 
 
 @app.callback(
+    Output("offcanvas_filters", "is_open"),
+    Input("btn_show_filters", "n_clicks"),
+    [State("offcanvas_filters", "is_open")],
+)
+def toggle_offcanvas_filters(n1, is_open):
+    #  Открывает/закрывает область фильтров
+    if n1:
+        return not is_open
+    return is_open
+
+
+@app.callback(
     Output('modal_table_record', 'is_open'),
     Output('modal_table_record_content', 'children'),
     Output('table_record_details', 'active_cell'),
@@ -224,18 +236,6 @@ def toggle_modal_save_table_data(n1, n2, is_open, n, data, file_name):
     if n1 or n2:
         return not is_open
     
-    return is_open
-
-
-@app.callback(
-    Output("offcanvas_filters", "is_open"),
-    Input("btn_show_filters", "n_clicks"),
-    [State("offcanvas_filters", "is_open")],
-)
-def toggle_offcanvas_filters(n1, is_open):
-    #  Открывает/закрывает область фильтров
-    if n1:
-        return not is_open
     return is_open
 
 

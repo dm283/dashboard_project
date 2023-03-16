@@ -5,28 +5,50 @@ from dash import html
 def create_template(
         widget_1_1, 
         widget_1_2, 
-        widget_1_3, 
+        widget_1_3,
+        widget_1_4,
+        widget_2_1,
         ):
     """
     Создает макет дашборда (сетку)
     """
 
     template = [
-        dbc.Col(
-            html.Div(
-                widget_1_1,
-                className='widget_cell_grid_div_label'),
-            className='widget_cell_grid', width=2),
-        dbc.Col(
-            html.Div(
-                widget_1_2,
-                className='widget_cell_grid_div_label'),
-            className='widget_cell_grid', width=2),
-        dbc.Col(
-            html.Div(
-                widget_1_3,
-                className='widget_cell_grid_div_label'),
-            className='widget_cell_grid', width=2),
+        dbc.Col([
+            dbc.Row(
+                html.Div(
+                    widget_1_1,
+                    className='widget_cell_grid_div_label'),
+                className='widget_cell_grid'
+            ),
+            dbc.Row(
+                html.Div(
+                    widget_1_2,
+                    className='widget_cell_grid_div_label'),
+                className='widget_cell_grid'
+            ),
+            dbc.Row(
+                html.Div(
+                    widget_1_3,
+                    className='widget_cell_grid_div_label'),
+                className='widget_cell_grid'
+            ),
+            dbc.Row(
+                html.Div(
+                    widget_1_4,
+                    className='widget_cell_grid_div_table'),
+                className='widget_cell_grid'
+            ),
+        ], style={'backgroundColor': 'Gainsboro'}, width=2),
+
+        dbc.Col([
+            dbc.Row(
+                html.Div(
+                    widget_2_1,
+                    className='widget_cell_grid_div_graph'),
+                className='widget_cell_grid'
+            ),  
+        ], style={'backgroundColor': 'Gainsboro'}, width=4)
     ]
 
     # template = [
