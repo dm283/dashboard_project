@@ -57,3 +57,9 @@ select_query[5] = """
     group by entity_type
 """
 select_columns[5] = ['entity_type', 'chat_cnt']
+
+
+select_query[6] = """
+  select id, adrto, subj, textemail, attachmentfiles, datep, dates from messages_email
+"""
+select_columns[6] = ['id', 'adrto', 'subj', 'textemail', 'attachmentfiles', 'datep', 'dates']

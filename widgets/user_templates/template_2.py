@@ -8,6 +8,7 @@ def create_template(
         widget_1_3,
         widget_1_4,
         widget_2_1,
+        widget_3_1,
         ):
     """
     Создает макет дашборда (сетку)
@@ -48,61 +49,17 @@ def create_template(
                     className='widget_cell_grid_div_graph'),
                 className='widget_cell_grid'
             ),  
-        ], style={'backgroundColor': 'Gainsboro'}, width=4)
+        ], style={'backgroundColor': 'Gainsboro'}, width=4),
+
+        dbc.Col([
+            dbc.Row(
+                html.Div(
+                    widget_3_1,
+                    className='widget_cell_grid_div_table'),
+                className='widget_cell_grid'
+            ),  
+        ], style={'backgroundColor': 'Gainsboro'}, width=6),
     ]
-
-    # template = [
-    #     dbc.Col([
-    #         dbc.Row([
-    #             dbc.Col(
-    #                 html.Div(
-    #                     widget_1_1_1,
-    #                     className='widget_cell_grid_div_label'),
-    #                 className='widget_cell_grid', width=4),
-    #             dbc.Col(
-    #                 html.Div(
-    #                     widget_1_1_2,
-    #                     className='widget_cell_grid_div_label'),
-    #                 className='widget_cell_grid', width=4),
-    #             dbc.Col(
-    #                 html.Div(
-    #                     widget_1_1_3,
-    #                     className='widget_cell_grid_div_label'),
-    #                 className='widget_cell_grid', width=4),
-    #         ]),
-
-    #         dbc.Row([
-    #             dbc.Col(
-    #                 html.Div(
-    #                     widget_1_2_1,
-    #                     className='widget_cell_grid_div_graph'),
-    #                 className='widget_cell_grid', width=6),
-    #             dbc.Col(
-    #                 html.Div(
-    #                     widget_1_2_2,
-    #                     className='widget_cell_grid_div_graph'),
-    #                 className='widget_cell_grid', width=6),
-    #         ]
-    #         ),
-
-    #         dbc.Row(
-    #             dbc.Col(
-    #                 html.Div(
-    #                     widget_1_3_1,
-    #                     className='widget_cell_grid_div_graph'),
-    #                 className='widget_cell_grid', width=12),
-    #         ),
-        
-    #     ], style={'backgroundColor': 'Gainsboro'}, width=7),
-
-
-    #     dbc.Col(
-    #         html.Div(
-    #             widget_2_1,
-    #             className='widget_cell_grid_div_table'),
-    #         className='widget_cell_grid', style={'backgroundColor': 'Gray'}, width=5),
-
-    # ]
 
 
     return dbc.Row(template, style={'margin': '2px 0px 2px 0px'})

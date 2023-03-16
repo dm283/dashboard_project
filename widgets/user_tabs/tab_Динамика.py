@@ -19,4 +19,5 @@ tab_content = template_2.create_template(
     widget_1_3=widget['label_cnt_telegram_chats'],
     widget_1_4=widget['table_telegram_chats_types'],
     widget_2_1=widget['graph_pie_msg_chanels'],
+    widget_3_1=widget['table_messages_email'],
     )
