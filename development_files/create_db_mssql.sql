@@ -146,32 +146,32 @@ INSERT INTO uemail(adrto, subj, textemail, attachmentfiles, datep, dates)
 	('e3@gmail.com', 'test_msg', 'this is it', 'file3.txt', '2023-03-17', '2023-03-17');
 
 
-INSERT INTO messages_email(adrto, subj, textemail, attachmentfiles, datep, dates)
+INSERT INTO messages_email(id, adrto, subj, textemail, attachmentfiles, datep, dates)
 	VALUES 
-	('e1@gmail.com', 'test_msg', 'this is it', 'file1.txt', '2023-03-15', '2023-03-15'),
-	('e2@gmail.com', 'test_msg', 'this is it', 'file2.txt', '2023-03-16', '2023-03-16'),
-	('e3@gmail.com', 'test_msg', 'this is it', 'file3.txt', '2023-03-17', '2023-03-17'),
-	('e1@gmail.com', 'test_msg', 'this is it', 'file1.txt', '2023-03-15', '2023-03-15'),
-	('e2@gmail.com', 'test_msg', 'this is it', 'file2.txt', '2023-03-16', '2023-03-16'),
-	('e3@gmail.com', 'test_msg', 'this is it', 'file3.txt', '2023-03-17', '2023-03-17'),
-	('e1@gmail.com', 'test_msg', 'this is it', 'file1.txt', '2023-03-15', '2023-03-15'),
-	('e2@gmail.com', 'test_msg', 'this is it', 'file2.txt', '2023-03-16', '2023-03-16'),
-	('e3@gmail.com', 'test_msg', 'this is it', 'file3.txt', '2023-03-17', '2023-03-17'),
-	('e1@gmail.com', 'test_msg', 'this is it', 'file1.txt', '2023-03-15', '2023-03-15'),
-	('e2@gmail.com', 'test_msg', 'this is it', 'file2.txt', '2023-03-16', '2023-03-16'),
-	('e3@gmail.com', 'test_msg', 'this is it', 'file3.txt', '2023-03-17', '2023-03-17'),
-	('e1@gmail.com', 'test_msg', 'this is it', 'file1.txt', '2023-03-15', '2023-03-15'),
-	('e2@gmail.com', 'test_msg', 'this is it', 'file2.txt', '2023-03-16', '2023-03-16'),
-	('e3@gmail.com', 'test_msg', 'this is it', 'file3.txt', '2023-03-17', '2023-03-17'),
-	('e1@gmail.com', 'test_msg', 'this is it', 'file1.txt', '2023-03-15', '2023-03-15'),
-	('e2@gmail.com', 'test_msg', 'this is it', 'file2.txt', '2023-03-16', '2023-03-16'),
-	('e3@gmail.com', 'test_msg', 'this is it', 'file3.txt', '2023-03-17', '2023-03-17'),
-	('e1@gmail.com', 'test_msg', 'this is it', 'file1.txt', '2023-03-15', '2023-03-15'),
-	('e2@gmail.com', 'test_msg', 'this is it', 'file2.txt', '2023-03-16', '2023-03-16'),
-	('e3@gmail.com', 'test_msg', 'this is it', 'file3.txt', '2023-03-17', '2023-03-17'),
-	('e1@gmail.com', 'test_msg', 'this is it', 'file1.txt', '2023-03-15', '2023-03-15'),
-	('e2@gmail.com', 'test_msg', 'this is it', 'file2.txt', '2023-03-16', '2023-03-16'),
-	('e3@gmail.com', 'test_msg', 'this is it', 'file3.txt', '2023-03-17', '2023-03-17');
+	(1, 'e1@gmail.com', 'test_msg', 'this is it', 'file1.txt', '2023-03-15', '2023-03-15'),
+	(2, 'e2@gmail.com', 'test_msg', 'this is it', 'file2.txt', '2023-03-16', '2023-03-16'),
+	(3, 'e3@gmail.com', 'test_msg', 'this is it', 'file3.txt', '2023-03-17', '2023-03-17'),
+	(4, 'e1@gmail.com', 'test_msg', 'this is it', 'file1.txt', '2023-03-15', '2023-03-15'),
+	(5, 'e2@gmail.com', 'test_msg', 'this is it', 'file2.txt', '2023-03-16', '2023-03-16'),
+	(6, 'e3@gmail.com', 'test_msg', 'this is it', 'file3.txt', '2023-03-17', '2023-03-17'),
+	(7, 'e1@gmail.com', 'test_msg', 'this is it', 'file1.txt', '2023-03-15', '2023-03-15'),
+	(8, 'e2@gmail.com', 'test_msg', 'this is it', 'file2.txt', '2023-03-16', '2023-03-16'),
+	(9, 'e3@gmail.com', 'test_msg', 'this is it', 'file3.txt', '2023-03-17', '2023-03-17'),
+	(10, 'e1@gmail.com', 'test_msg', 'this is it', 'file1.txt', '2023-03-15', '2023-03-15'),
+	(11, 'e2@gmail.com', 'test_msg', 'this is it', 'file2.txt', '2023-03-16', '2023-03-16'),
+	(12, 'e3@gmail.com', 'test_msg', 'this is it', 'file3.txt', '2023-03-17', '2023-03-17'),
+	(13, 'e1@gmail.com', 'test_msg', 'this is it', 'file1.txt', '2023-03-15', '2023-03-15'),
+	(14, 'e2@gmail.com', 'test_msg', 'this is it', 'file2.txt', '2023-03-16', '2023-03-16'),
+	(15, 'e3@gmail.com', 'test_msg', 'this is it', 'file3.txt', '2023-03-17', '2023-03-17'),
+	(16, 'e1@gmail.com', 'test_msg', 'this is it', 'file1.txt', '2023-03-15', '2023-03-15'),
+	(17, 'e2@gmail.com', 'test_msg', 'this is it', 'file2.txt', '2023-03-16', '2023-03-16'),
+	(18, 'e3@gmail.com', 'test_msg', 'this is it', 'file3.txt', '2023-03-17', '2023-03-17'),
+	(19, 'e1@gmail.com', 'test_msg', 'this is it', 'file1.txt', '2023-03-15', '2023-03-15'),
+	(20, 'e2@gmail.com', 'test_msg', 'this is it', 'file2.txt', '2023-03-16', '2023-03-16'),
+	(21, 'e3@gmail.com', 'test_msg', 'this is it', 'file3.txt', '2023-03-17', '2023-03-17'),
+	(22, 'e1@gmail.com', 'test_msg', 'this is it', 'file1.txt', '2023-03-15', '2023-03-15'),
+	(23, 'e2@gmail.com', 'test_msg', 'this is it', 'file2.txt', '2023-03-16', '2023-03-16'),
+	(24, 'e3@gmail.com', 'test_msg', 'this is it', 'file3.txt', '2023-03-17', '2023-03-17');
 
 
 INSERT INTO web_service_usage(web_service, user_id, device, country, user_status, sign_date)
