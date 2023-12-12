@@ -58,7 +58,7 @@ widget = [ modal_table_record,
         ]
 
 widget_update_data_type = 'data'
-widget_select_index = 0
+widget_select_index = 'web_service_usage'
 
 
 def widget_update(df, filter_values_list, n):

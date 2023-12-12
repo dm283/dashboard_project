@@ -21,7 +21,7 @@ widget = [
         ]
 
 widget_update_data_type = 'data'
-widget_select_index = 5
+widget_select_index = 'count_telegram_chats_types'
 
 
 def widget_update(df, filter_values_list, n):

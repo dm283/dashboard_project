@@ -5,7 +5,7 @@ import plotly.express as px, dash_bootstrap_components as dbc
 id = 'graph_pie_msg_chanels'
 widget = dcc.Graph(id=id)
 widget_update_data_type = 'figure'
-widget_select_index = 4
+widget_select_index = 'count_messages'
 
 
 def widget_update(df, filter_values_list, n):

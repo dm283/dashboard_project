@@ -4,7 +4,7 @@ from dash import dcc, html
 id='label_cnt_telegrams'
 widget = [ html.H1(style={'color': 'DarkBlue'}, id=id), html.H6('Кол-во telegram сообщений') ]
 widget_update_data_type = 'children'
-widget_select_index = 2
+widget_select_index = 'telegram_messages'
 
 
 def widget_update(df, filter_values_list, n):

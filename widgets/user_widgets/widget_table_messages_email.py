@@ -17,6 +17,7 @@ widget = [
                 style_header={'backgroundColor': 'Black', 'color': 'white'},
                 style_data={'backgroundColor': 'DarkSlateGray', 'color': 'white'},
                 id=id,
+                #filter_action='native',
                 page_action="native",
                 page_current= 0,
                 page_size= 11,
@@ -24,7 +25,7 @@ widget = [
         ]
 
 widget_update_data_type = 'data'
-widget_select_index = 6
+widget_select_index = 'messages_email'
 
 
 def widget_update(df, filter_values_list, n):

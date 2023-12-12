@@ -4,7 +4,7 @@ from dash import dcc, html
 id='label_cnt_users'
 widget = [ html.H1(style={'color': 'DarkBlue'}, id=id), html.H6('Кол-во пользователей') ]
 widget_update_data_type = 'children'
-widget_select_index = 0
+widget_select_index = 'web_service_usage'
 
 
 def widget_update(df, filter_values_list, n):

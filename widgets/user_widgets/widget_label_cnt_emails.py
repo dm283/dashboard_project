@@ -4,7 +4,7 @@ from dash import dcc, html
 id='label_cnt_emails'
 widget = [ html.H1(style={'color': 'DarkBlue'}, id=id), html.H6('Кол-во email сообщений') ]
 widget_update_data_type = 'children'
-widget_select_index = 3
+widget_select_index = 'email_messages'
 
 
 def widget_update(df, filter_values_list, n):
