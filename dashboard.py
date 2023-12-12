@@ -6,6 +6,9 @@ import functions_library as dfl, content_create_functions as ccf
 from widgets.common_widgets import common_widgets
 from widgets.user_widgets import database_select, dashboard_header
 
+import warnings
+warnings.filterwarnings('ignore')
+
 
 #  Импортирование элементов дашборда
 # select = database_select.select # sql-запрос к базе данных
