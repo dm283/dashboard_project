@@ -173,4 +173,11 @@ INSERT INTO messages_email(adrto, subj, textemail, attachmentfiles, datep, dates
 	('e2@gmail.com', 'test_msg', 'this is it', 'file2.txt', '2023-03-16', '2023-03-16'),
 	('e3@gmail.com', 'test_msg', 'this is it', 'file3.txt', '2023-03-17', '2023-03-17');
 
-	
+
+INSERT INTO web_service_usage(web_service, user_id, device, country, user_status, sign_date)
+	VALUES 
+	('aMessenger', 18, 'desktop', 'Australia', 'sign_in', '2023-12-11'),
+	('aDashboard', 19, 'desktop', 'India', 'sign_in', '2023-12-11'),
+	('aDashboard', 20, 'mobile', 'Russia', 'sign_in', '2023-12-11'),
+	('aMessenger', 21, 'mobile', 'Canada', 'sign_in', '2023-12-11'),
+	('aMessenger', 22, 'desktop', 'Japan', 'sign_in', '2023-12-11');
