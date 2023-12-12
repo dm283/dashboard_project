@@ -1,3 +1,4 @@
+-- ************************ POSTGRESQL *********************************
 create table if not exists dev_pg_1.public.web_service_usage(
 	id serial primary key,
 	web_service varchar(24) not null,
@@ -15,3 +16,4 @@ where user_status = 'sign_in'
 order by web_service, device
 
 --delete from dev_pg_1.public.web_service_usage
+

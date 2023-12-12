@@ -15,7 +15,7 @@ def create_widget_dictionary():
     # widget_update_data_type  -  набор типов данных, возвращаемых функцией формирования/обновления
     
     widget_list = [w.partition('.')[0] for w in os.listdir('widgets/user_widgets') if w.startswith('widget_')]
-    widget, widget_id, widget_update, widget_update_data_type, output_list = {}, {}, {}, {}, []
+    widget, widget_id, widget_update, widget_update_data_type, output_list, widget_select_index = {}, {}, {}, {}, [], {}
 
     #  Импортирование модулей из widget_list и наполнение widget, widget_id
     for w in widget_list:
@@ -29,7 +29,9 @@ def create_widget_dictionary():
 
         output_list.append( Output(widget_key, widget_update_data_type[widget_key]) )
 
-    return widget, widget_id, widget_update, widget_update_data_type, output_list, widget_list
+        widget_select_index[widget_key] = import_name.widget_select_index
+
+    return widget, widget_id, widget_update, widget_update_data_type, output_list, widget_list, widget_select_index
 
 
 def create_widgets_area(USER):

@@ -6,6 +6,7 @@ import plotly.express as px, dash_bootstrap_components as dbc
 id = 'graph_bar_countries'
 widget = dcc.Graph(id=id)
 widget_update_data_type = 'figure'
+widget_select_index = 'web_service_usage'
 
 
 def widget_update(df, filter_values_list, n):

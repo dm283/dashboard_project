@@ -2,8 +2,9 @@ from dash import dcc, html
 
 id = 'label_workload'
 widget = [ html.H1(style={'color': 'DarkBlue'}, id=id), html.H6('Уровень загруженности') ]
-
 widget_update_data_type = 'children'
+widget_select_index = 'web_service_usage'
+
 
 def widget_update(df, filter_values_list, n):
     # 

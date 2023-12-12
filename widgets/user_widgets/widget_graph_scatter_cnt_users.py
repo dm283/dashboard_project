@@ -6,6 +6,8 @@ from datetime import datetime
 id = 'graph_scatter_cnt_users' #'scatter_cnt_users'
 widget = dcc.Graph(id=id)
 widget_update_data_type = 'figure'
+widget_select_index = 'web_service_usage'
+
 
 def widget_update(df, filter_values_list, ax_msg, ay_msg, n):
     #
@@ -29,6 +31,6 @@ def widget_update(df, filter_values_list, ax_msg, ay_msg, n):
         if len(ax_msg) > 9:
             ax_msg.pop(0)
             ay_msg.pop(0)
-    figure = px.scatter(title='Кол-во пользователей онлайн', height=250)
+    figure = px.scatter(title='Кол-во пользователей онлайн', height=310)
     figure.add_traces(list(px.line(x=ax_msg, y=ay_msg, markers=True).select_traces()))
     return figure
