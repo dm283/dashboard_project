@@ -21,9 +21,14 @@ def get_db_connect():
   print('connect to database ..... ', end='')
   try:
     if DB_TYPE == '-p':
-      CONN = psycopg2.connect(DB_CONNECTION_STRING)  # postgre database
+      # postgre database
+      if 'DSN=' in DB_CONNECTION_STRING:
+        CONN = pyodbc.connect(DB_CONNECTION_STRING)
+      else:
+        CONN = psycopg2.connect(DB_CONNECTION_STRING)  
     elif DB_TYPE == '-m':
-      CONN = pyodbc.connect(DB_CONNECTION_STRING)     # ms-sql database
+      # ms-sql database
+      CONN = pyodbc.connect(DB_CONNECTION_STRING)     
     print('ok')
   except(Exception) as err:
     print('error database connection'); print(err)
