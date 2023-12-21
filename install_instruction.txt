@@ -7,8 +7,9 @@
 5. Copy config_template.ini to config.ini  ->  set settings (connection_string = DSN=<odbc_conn>)
 6. While you are in [..dashboard_project folder], create python virtual environment (run the following command in CMD or PowerShell):  python -m venv venv
 7. Run python virtual environment:  venv\scripts\activate
-8. Run dashboard application:  python dashboard.py
-9. Open in your brouser:   http://127.0.0.1:8050/
-10. Run simulator (for dymanic figures in dashboard):   
+8. Install required python libraries:  pip install -r requirements.txt
+9. Run dashboard application:  python dashboard.py
+10. Open in your brouser:   http://127.0.0.1:8050/
+11. Run simulator (for dymanic figures in dashboard):   
       -  cd development_files
       -  python simulator_for_dashboard.py
