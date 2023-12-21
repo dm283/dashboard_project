@@ -13,3 +13,17 @@
 11. Run simulator (for dymanic figures in dashboard):   
       -  cd development_files
       -  python simulator_for_dashboard.py
+
+
+*********************** MODULES DESCRIPTION **********************
+Practice programmer works only with modules in folder "widgets"!
+
+[user_tabs_list.py]  -  set list of tab names
+[user_tabs]  -  folder, which consists tabs of dashboard
+every tab_*.py module consists list of widgets and template (markup of dashboard)
+[user_templates]  -  folder, which consists templates
+every template_*.py module consists rows and cols (cells) and type of widget inside cell
+[user_widgets]  -  folder, which consists widgets
+data_filter.py  -  module with filters of dashboard
+database_select.py  -  module with sql queries
+every widget_<widget type>_*.py module consists description of widget, including widget_update function with widget attbibutes, filters and plotly-python-library figure
