@@ -2,8 +2,8 @@
 1. Install Git (https://git-scm.com/download/win)
 2. Install Python [version 3.10.8]  (https://www.python.org/ftp/python/3.10.8/python-3.10.8-amd64.exe)  
     -  along installation set enable "Add Path"
-3. Create MS-SQL database (copy sql code from ..development_files/create_db_mssql and run it in MS SQL Server Management Studio)
-4. Install Dashboard application from Git (git clone https://github.com/dm283/dashboard_project.git)
+3. Install Dashboard application from Git (git clone https://github.com/dm283/dashboard_project.git)
+4. Create MS-SQL database (copy sql code from ..development_files/create_db_mssql and run it in MS SQL Server Management Studio)
 5. Copy config_template.ini to config.ini  ->  set settings (connection_string = DSN=<odbc_conn>)
 6. While you are in [..dashboard_project folder], create python virtual environment (run the following command in CMD or PowerShell):  python -m venv venv
 7. Run python virtual environment:  venv\scripts\activate
