@@ -231,6 +231,8 @@ def toggle_modal_save_table_data(n1, n2, is_open, n, data, file_name):
         try:
             df_data = pd.DataFrame(data)
             file_name = f'saved_files/{file_name}.xlsx'
+            if not os.path.exists('saved_files'):
+                os.mkdir('saved_files')
             df_data.to_excel(file_name)
             BNT_SAVE_TABLE_DATA = n
         except Exception as ex:
@@ -242,4 +244,5 @@ def toggle_modal_save_table_data(n1, n2, is_open, n, data, file_name):
     return is_open
 
 
-app.run_server(debug=True)
+app.run_server(debug=True, host="127.0.0.1", port="8050") # debug=False, host="0.0.0.0" for prod
+# app.run_server(debug=True)
