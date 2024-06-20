@@ -25,10 +25,15 @@ select_columns[s1] = ['id', 'web_service', 'user_id', 'device', 'country', 'user
 
 
 s2 = 'telegram_chats'
+# select_query[s2] = f"""
+#       select id, chat_id, entity_name, bot_name, update_date 
+#         from {DB_NAME}.{DB_SCHEMA}.telegram_chats
+#         where is_active = 1
+# """
 select_query[s2] = f"""
       select id, chat_id, entity_name, bot_name, update_date 
         from {DB_NAME}.{DB_SCHEMA}.telegram_chats
-        where is_active = 1
+        where is_active
 """
 select_columns[s2] = ['id', 'chat_id', 'entity_name', 'bot_name', 'update_date']
 
