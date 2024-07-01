@@ -1,0 +1,12 @@
+services:
+
+  app:
+    # build: .
+    image: dash-pro
+    restart: always
+    environment:
+      - POSTGRES_HOST=192.168.0.102
+      - POSTGRES_DB=dev_pg_1
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=s2d3f4!@
+      
