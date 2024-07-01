@@ -149,6 +149,7 @@ def update_data(filter_values_list, n, n_update_btn):
     return return_functions + [ DATA_UPDATE_PERIOD * 1000 ] + [ update_date ]
 
 
+
 @app.callback(
     Output('settings_modal_window', 'is_open'),
     [Input('btn_settings', 'n_clicks'), Input('btn_settings_close', 'n_clicks')],
@@ -184,35 +185,43 @@ def toggle_offcanvas_filters(n1, is_open):
     return is_open
 
 
-@app.callback(
-    Output('modal_table_record', 'is_open'),
-    Output('modal_table_record_content', 'children'),
-    Output('table_record_details', 'active_cell'),
-    Input('table_record_details', 'active_cell'),
-    State('table_record_details', 'data'),
-    Input('btn_modal_table_record_close', 'n_clicks'),
-    State('modal_table_record', 'is_open'),
-)
-def toggle_modal_table_records(active_cell, data, n_close, is_open):
-    #  Открывает/закрывает модальное окно с данными из таблицы
-    if active_cell:
-        row_number = int(active_cell['row'])
-        record = data[row_number]
-        content = []
-        for k in record.keys():
-            value = record[k] if record[k] else 'None'
-            row = dbc.Row([
-                dbc.Col(dbc.Label(k), width=6),
-                dbc.Col(dbc.Label(value), width=6),
-            ], style={'marginBottom': '5px'})
-            content.append(row)
-    else:
-        content = ''
+#  Набор функций для модальных окон каждого соответствующего виджета (таблицы)
+for i in ['', '_2', '_3']:
+    @app.callback(Output(f'modal_table_record{i}', 'is_open'), Output(f'modal_table_record_content{i}', 'children'),
+        Output(f'table_record_details{i}', 'active_cell'), Input(f'table_record_details{i}', 'active_cell'),
+        State(f'table_record_details{i}', 'data'), Input(f'btn_modal_table_record_close{i}', 'n_clicks'),
+        State(f'modal_table_record{i}', 'is_open'),)
+    def toggle_modal_table_records(active_cell, data, n_close, is_open):
+        #  Открывает/закрывает модальное окно с данными из таблицы
+        if active_cell:
+            row_number = int(active_cell['row']); record = data[row_number]; content = []
+            for k in record.keys():
+                value = record[k] if record[k] else 'None'
+                row = dbc.Row([dbc.Col(dbc.Label(k), width=6), dbc.Col(dbc.Label(value), width=6),], style={'marginBottom': '5px'})
+                content.append(row)
+        else:
+            content = ''
+        if active_cell or n_close:
+            return not is_open, content, None
+        return is_open, content, active_cell
 
-    if active_cell or n_close:
-        return not is_open, content, None
-
-    return is_open, content, active_cell
+# @app.callback(Output('modal_table_record', 'is_open'), Output('modal_table_record_content', 'children'),
+#     Output('table_record_details', 'active_cell'), Input('table_record_details', 'active_cell'),
+#     State('table_record_details', 'data'), Input('btn_modal_table_record_close', 'n_clicks'),
+#     State('modal_table_record', 'is_open'),)
+# def toggle_modal_table_records(active_cell, data, n_close, is_open):
+#     #  Открывает/закрывает модальное окно с данными из таблицы
+#     if active_cell:
+#         row_number = int(active_cell['row']); record = data[row_number]; content = []
+#         for k in record.keys():
+#             value = record[k] if record[k] else 'None'
+#             row = dbc.Row([dbc.Col(dbc.Label(k), width=6), dbc.Col(dbc.Label(value), width=6),], style={'marginBottom': '5px'})
+#             content.append(row)
+#     else:
+#         content = ''
+#     if active_cell or n_close:
+#         return not is_open, content, None
+#     return is_open, content, active_cell
 
 
 @app.callback(
