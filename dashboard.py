@@ -6,6 +6,8 @@ import functions_library as dfl, content_create_functions as ccf
 from widgets.common_widgets import common_widgets
 from widgets.user_widgets import database_select, dashboard_header
 
+from flask import Flask
+
 import warnings
 warnings.filterwarnings('ignore')
 
@@ -40,7 +42,9 @@ ax_msg, ay_msg = [], []  # массивы хранения кол-ва поль�
 conn = dfl.get_db_connect()
 
 #  Создание dash-приложения
-app = Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
+server = Flask(__name__)
+app = Dash(server=server, external_stylesheets=[dbc.themes.BOOTSTRAP])
+# app = Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
 app.title = 'Altasoft | Dashboard | Мониторинг загруженности веб-сервисов' 
 
 
@@ -149,6 +153,7 @@ def update_data(filter_values_list, n, n_update_btn):
     return return_functions + [ DATA_UPDATE_PERIOD * 1000 ] + [ update_date ]
 
 
+
 @app.callback(
     Output('settings_modal_window', 'is_open'),
     [Input('btn_settings', 'n_clicks'), Input('btn_settings_close', 'n_clicks')],
@@ -184,64 +189,63 @@ def toggle_offcanvas_filters(n1, is_open):
     return is_open
 
 
-@app.callback(
-    Output('modal_table_record', 'is_open'),
-    Output('modal_table_record_content', 'children'),
-    Output('table_record_details', 'active_cell'),
-    Input('table_record_details', 'active_cell'),
-    State('table_record_details', 'data'),
-    Input('btn_modal_table_record_close', 'n_clicks'),
-    State('modal_table_record', 'is_open'),
-)
-def toggle_modal_table_records(active_cell, data, n_close, is_open):
-    #  Открывает/закрывает модальное окно с данными из таблицы
-    if active_cell:
-        row_number = int(active_cell['row'])
-        record = data[row_number]
-        content = []
-        for k in record.keys():
-            value = record[k] if record[k] else 'None'
-            row = dbc.Row([
-                dbc.Col(dbc.Label(k), width=6),
-                dbc.Col(dbc.Label(value), width=6),
-            ], style={'marginBottom': '5px'})
-            content.append(row)
-    else:
-        content = ''
-
-    if active_cell or n_close:
-        return not is_open, content, None
-
-    return is_open, content, active_cell
-
-
-@app.callback(
-    Output('modal_save_table_data', 'is_open'),
-    [Input('btn_open_modal_save_table_data', 'n_clicks'), Input('btn_modal_save_table_data_close', 'n_clicks')],
-    State('modal_save_table_data', 'is_open'),
-    Input('btn_modal_save_table_data_save', 'n_clicks'),
-    State('table_record_details', 'data'),
-    State('input_file_name', 'value')
-)
-def toggle_modal_save_table_data(n1, n2, is_open, n, data, file_name):
-    #  Открывает/закрывает модальное окно сохранения данных таблицы
-    global BNT_SAVE_TABLE_DATA
-
-    if BNT_SAVE_TABLE_DATA < n:
-        try:
-            df_data = pd.DataFrame(data)
-            file_name = f'saved_files/{file_name}.xlsx'
-            if not os.path.exists('saved_files'):
-                os.mkdir('saved_files')
-            df_data.to_excel(file_name)
-            BNT_SAVE_TABLE_DATA = n
-        except Exception as ex:
-            print(ex)
-
-    if n1 or n2:
-        return not is_open
+#  Набор функций для каждого соответствующего виджета (таблицы)
+for i in ['', '_2', '_3']:
+    @app.callback(Output(f'modal_table_record{i}', 'is_open'), Output(f'modal_table_record_content{i}', 'children'),
+        Output(f'table_record_details{i}', 'active_cell'), Input(f'table_record_details{i}', 'active_cell'),
+        State(f'table_record_details{i}', 'data'), Input(f'btn_modal_table_record_close{i}', 'n_clicks'),
+        State(f'modal_table_record{i}', 'is_open'),)
+    def toggle_modal_table_records(active_cell, data, n_close, is_open):
+        #  Открывает/закрывает модальное окно с данными из таблицы
+        if active_cell:
+            row_number = int(active_cell['row']); record = data[row_number]; content = []
+            for k in record.keys():
+                value = record[k] if record[k] else 'None'
+                row = dbc.Row([dbc.Col(dbc.Label(k), width=6), dbc.Col(dbc.Label(value), width=6),], style={'marginBottom': '5px'})
+                content.append(row)
+        else:
+            content = ''
+        if active_cell or n_close:
+            return not is_open, content, None
+        return is_open, content, active_cell
     
-    return is_open
+    @app.callback(
+        Output(f'modal_save_table_data{i}', 'is_open'),
+        [Input(f'btn_open_modal_save_table_data{i}', 'n_clicks'), Input(f'btn_modal_save_table_data_close{i}', 'n_clicks')],
+        State(f'modal_save_table_data{i}', 'is_open'),
+        Input(f'btn_modal_save_table_data_save{i}', 'n_clicks'),
+        State(f'table_record_details{i}', 'data'),
+        State(f'input_file_name{i}', 'value'),
+    )
+    def toggle_modal_save_table_data(n1, n2, is_open, n, data, file_name):
+        #  Открывает/закрывает модальное окно сохранения данных таблицы
+        global BNT_SAVE_TABLE_DATA
+        if BNT_SAVE_TABLE_DATA < n:
+            try:
+                df_data = pd.DataFrame(data)
+                file_name = f'saved_files/{file_name}.xlsx'
+                if not os.path.exists('saved_files'):
+                    os.mkdir('saved_files')
+                df_data.to_excel(file_name)
+                BNT_SAVE_TABLE_DATA = n
+            except Exception as ex:
+                print(ex)
+        if n1 or n2:
+            return not is_open       
+        return is_open
+    
+    @app.callback(
+        Output(f"download_dataframe_xlsx{i}", "data"),
+        Input(f"btn_modal_save_table_data_save{i}", "n_clicks"),
+        State(f'table_record_details{i}', 'data'),
+        State(f'input_file_name{i}', 'value'),
+        prevent_initial_call=True,
+    )
+    def download_table_data(n_clicks, data, file_name):
+        #  Сохраняет в браузере файл с данными таблицы
+        df_data = pd.DataFrame(data)
+        file_name += '.xlsx'
+        return dcc.send_data_frame(df_data.to_excel, file_name)
 
 
 app.run_server(debug=True, host="127.0.0.1", port="8050") # debug=False, host="0.0.0.0" for prod
