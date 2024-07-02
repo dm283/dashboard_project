@@ -42,9 +42,10 @@ def create_widgets_area(USER):
     #  tabs_labels_list - список ключей/системных наименований вкладок (наименование файла вкладки без префикса tab_)
     #  tab_content - структура данных с контентом вкладок
     #  tab_label - наименования вкладок как они отображаются в дашборде (tabs_labels_list без символов '_')
-    user_tabs_list = tabs_list[USER]
-
+    #  отображаются все вкладки, но активны только перечисленные у юзера (если вкладки просто не добавлять, возникает ошибка)   
+    user_tabs_list = tabs_list['all_tabs']
     tabs_labels_list = [ t.partition('_')[2] for t in user_tabs_list ]
+    active_tabs_labels_list = [ t.partition('_')[2] for t in tabs_list[USER] ]    ###########
     tab_content, tab_label = {}, {}
 
     #  Импортирование модулей перечисленных в tabs_list (файлы tab_*.py из директории widget/user_tabs) и наполнение tab_content, tab_label
@@ -56,9 +57,13 @@ def create_widgets_area(USER):
 
     #  Формирование области виджетов дашборда
     tabs_area = []
-    for label in tabs_labels_list:
-        tabs_area.append( dbc.Tab(tab_content[label], label=tab_label[label]) )
-
+    for l in active_tabs_labels_list:
+        tabs_area.append( dbc.Tab(tab_content[l], label=tab_label[l]) )
+    for l in tabs_labels_list:
+        #  эти вкладки не будут отображены, они добавляются только чтобы не возникало конфликта id
+        if l not in active_tabs_labels_list:
+            tabs_area.append( dbc.Tab(tab_content[l], label='', disabled=True) )
+            
     widgets_area = [dbc.Tabs(tabs_area)]
 
     return widgets_area
