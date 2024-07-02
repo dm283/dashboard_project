@@ -24,17 +24,18 @@ modal_save_table_data = dbc.Modal(
                     dbc.ModalBody([
                         dbc.Row([
                             dbc.Col(dbc.Label("Наименование файла"), width=7),
-                            dbc.Col(dbc.Input(id='input_file_name', type='text'))
+                            dbc.Col(dbc.Input(id='input_file_name_3', type='text'))
                         ], style={'marginBottom': '5px'}),
                     ]),
                     dbc.ModalFooter(html.Div([
-                        dbc.Button("Сохранить", id='btn_modal_save_table_data_save', n_clicks=0,
+                        dbc.Button("Сохранить", id='btn_modal_save_table_data_save_3', n_clicks=0,
                             style={'width': '120px', 'marginRight': '10px'}, color="success"), 
-                        dbc.Button("Закрыть", id='btn_modal_save_table_data_close', n_clicks=0,
+                        dcc.Download(id="download_dataframe_xlsx_3"), #########
+                        dbc.Button("Закрыть", id='btn_modal_save_table_data_close_3', n_clicks=0,
                             style={'width': '120px'}, color="warning" )
                         ]))
                 ],
-                id='modal_save_table_data',
+                id='modal_save_table_data_3',
                 is_open=False
             )
 
@@ -42,7 +43,7 @@ modal_save_table_data = dbc.Modal(
 widget = [ modal_table_record,
            modal_save_table_data,
             html.H6([     
-                html.Span(html.Img(src='assets/baseline_save_white.png', id='btn_open_modal_save_table_data', n_clicks=0,), 
+                html.Span(html.Img(src='assets/baseline_save_white.png', id='btn_open_modal_save_table_data_3', n_clicks=0,), 
                           className='icon_save_table_data'),
                 html.Span('Детализация данных о пользователях онлайн', style={'marginLeft': '110px'}),
                 ], style={'color': 'white', 'backgroundColor': 'None', 'marginBottom': '2px', 'textAlign': 'left'}), 

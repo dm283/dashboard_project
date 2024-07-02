@@ -30,6 +30,7 @@ modal_save_table_data = dbc.Modal(
                     dbc.ModalFooter(html.Div([
                         dbc.Button("Сохранить", id='btn_modal_save_table_data_save', n_clicks=0,
                             style={'width': '120px', 'marginRight': '10px'}, color="success"), 
+                        dcc.Download(id="download_dataframe_xlsx"), #########
                         dbc.Button("Закрыть", id='btn_modal_save_table_data_close', n_clicks=0,
                             style={'width': '120px'}, color="warning" )
                         ]))
