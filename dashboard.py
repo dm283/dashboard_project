@@ -1,4 +1,4 @@
-import os, json, dash_bootstrap_components as dbc, pandas as pd
+import sys, os, json, dash_bootstrap_components as dbc, pandas as pd
 from dash import Dash, dcc, html, Input, Output, State, ALL
 from datetime import datetime
 
@@ -10,6 +10,9 @@ from flask import Flask
 
 import warnings
 warnings.filterwarnings('ignore')
+
+DEBUG, HOST, PORT = dfl.DEBUG, dfl.HOST, dfl.PORT
+print(DEBUG, HOST, PORT)
 
 
 #  Импортирование элементов дашборда
@@ -248,5 +251,7 @@ for i in ['', '_2', '_3']:
         return dcc.send_data_frame(df_data.to_excel, file_name)
 
 
-app.run_server(debug=True, host="127.0.0.1", port="8050") # debug=False, host="0.0.0.0" for prod
+app.run_server(debug=DEBUG, host=HOST, port=PORT) 
+# app.run_server(debug=True, host="127.0.0.1", port="8050")  for dev (my local machine)
+# app.run_server(debug=False, host="0.0.0.0", port="8050")   for prod (alta test server)
 # app.run_server(debug=True)

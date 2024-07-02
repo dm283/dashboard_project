@@ -8,7 +8,11 @@ if os.path.exists(config_file):
   config.read(config_file, encoding='utf-8')
 else:
   print("error! config file doesn't exist"); sys.exit()
-  
+
+DEBUG = config.getboolean('main', 'debug')
+HOST = config['main']['host']
+PORT = config['main']['port']
+
 DB_CONNECTION_STRING = config['db']['db_connection_string']
 DB_TYPE = config['db']['db_type']
 DB_NAME = config['db']['db_name']
