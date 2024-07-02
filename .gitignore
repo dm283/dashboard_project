@@ -2,5 +2,5 @@ __pycache__/
 saved_files/
 deprecated/
 venv/
-widgets/users_list.json
+users/*.json
 config.ini

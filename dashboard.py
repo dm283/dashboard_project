@@ -29,7 +29,7 @@ widget_update, widget_update_data_type, output_list, widget_list, widget_select_
 
 try:
     #  при отсутствии файла с пользователями вход без страницы аутентификации
-    with open('widgets/users_list.json', 'r') as jsonfile:
+    with open('users/users_list.json', 'r') as jsonfile:
         USERS_LIST = json.load(jsonfile)  # type = dict
     ENTER_VIA_AUTH_PAGE = True    #  Флаг входа через страницу аутентификации
     USER = str()
