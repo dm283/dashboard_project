@@ -1,6 +1,8 @@
 import plotly.express as px, dash_bootstrap_components as dbc
 from dash import Dash, dcc, html, Input, Output, State, dash_table, ALL
 
+# сolumns_displayed - отображаемые в таблице столбцы / columns_all - все загруженные столбцы (отображаются в окне записи)
+# исходный select при этом может иметь больше столбцов!
 
 id = 'table_record_details_2'
 table_name = 'Сообщения e-mail'
@@ -8,6 +10,7 @@ widget_update_data_type = 'data'         # тип данных для output - �
 widget_select_index = 'messages_email'   # id соответствующего select из database_select.py
 сolumns_displayed = ['id', 'adrto', 'subj', 'dates']
 columns_all = ['id', 'adrto', 'subj', 'dates']
+pagination = True
 
 #  Модальное окно с расширенными данными о записи
 modal_table_record = dbc.Modal(
@@ -45,6 +48,15 @@ modal_save_table_data = dbc.Modal(
                 is_open=False
             )
 
+
+if pagination:
+    table_height = '676px'
+    table_page_action = 'native'
+else:
+    table_height = '720px'
+    table_page_action = 'none'
+
+
 #  Виджет "Таблица"
 widget = [ modal_table_record,
            modal_save_table_data,
@@ -54,13 +66,13 @@ widget = [ modal_table_record,
                 html.Span(table_name, style={'marginLeft': '210px'}),
                 ], style={'color': 'white', 'backgroundColor': 'None', 'marginBottom': '2px', 'textAlign': 'left'}), 
             dash_table.DataTable(
+                id=id,
                 columns=[{"name": i, "id": i} for i in сolumns_displayed],
                 style_cell = {'font_size': '10px', 'textAlign': 'center'},
-                page_action='none',
-                style_table={'height': '720px', 'overflowY': 'auto'},
+                style_table={'height': table_height, 'overflowY': 'auto'},
                 style_header={'backgroundColor': 'Black', 'color': 'white'},
                 style_data={'backgroundColor': 'DarkSlateGray', 'color': 'white'},
-                id=id
+                page_action=table_page_action, page_current=0, page_size=21,
                 ),
         ]
 

@@ -196,22 +196,24 @@ def toggle_offcanvas_filters(n1, is_open):
 #  Набор функций для каждого соответствующего виджета (таблицы)
 for i in ['', '_2', '_3']:
     @app.callback(Output(f'modal_table_record{i}', 'is_open'), Output(f'modal_table_record_content{i}', 'children'),
-        Output(f'table_record_details{i}', 'active_cell'), Input(f'table_record_details{i}', 'active_cell'),
-        State(f'table_record_details{i}', 'data'), Input(f'btn_modal_table_record_close{i}', 'n_clicks'),
-        State(f'modal_table_record{i}', 'is_open'),)
+        Output(f'table_record_details{i}', 'active_cell'), Output(f'btn_modal_table_record_close{i}', 'n_clicks'), 
+        Input(f'table_record_details{i}', 'active_cell'), State(f'table_record_details{i}', 'data'), 
+        Input(f'btn_modal_table_record_close{i}', 'n_clicks'), State(f'modal_table_record{i}', 'is_open'),)
     def toggle_modal_table_records(active_cell, data, n_close, is_open):
         #  Открывает/закрывает модальное окно с данными из таблицы
         if active_cell:
-            row_number = int(active_cell['row']); record = data[row_number]; content = []
+            row_number = int(active_cell['row_id']); content = []
+            for r in data:
+                if r['id'] == row_number:
+                    record = r; break
             for k in record.keys():
                 value = record[k] if record[k] else 'None'
                 row = dbc.Row([dbc.Col(dbc.Label(k), width=6), dbc.Col(dbc.Label(value), width=6),], style={'marginBottom': '5px'})
                 content.append(row)
-        else:
-            content = ''
-        if active_cell or n_close:
-            return not is_open, content, None
-        return is_open, content, active_cell
+        if n_close:
+            return False, content, None, 0
+        return True, content, active_cell, 0
+
     
     @app.callback(
         Output(f'modal_save_table_data{i}', 'is_open'),
