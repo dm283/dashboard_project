@@ -1,6 +1,7 @@
 # БИБЛИОТЕКА СИСТЕМНЫХ ФУНКЦИЙ ДЛЯ DASHBOARD_PROJECT
 import sys, os, configparser, psycopg2, pyodbc, pandas as pd
 from pathlib import Path
+from dash import dcc, html
 
 config = configparser.ConfigParser()
 config_file = os.path.join(Path(__file__).resolve().parent, 'config.ini')   
@@ -20,7 +21,7 @@ DB_SCHEMA = config['db']['db_schema']
 
 
 def get_db_connect():
-  #  connects to database with defined in db argument type
+  #  Подключение к базе данных, варианты для postres и ms-sql
   print(DB_CONNECTION_STRING)
   print('connect to database ..... ', end='')
   try:
@@ -37,18 +38,23 @@ def get_db_connect():
   except(Exception) as err:
     print('error database connection'); print(err)
     sys.exit(1)
-
   return CONN
 
 
-def get_db_data_to_datafame(conn, select, column_names):
-    """
-    Загрузка из базы данных в pandas-датафрейм
-    """
+def get_db_data_to_datafame(conn, select):
+    #  Загрузка из базы данных в pandas-датафрейм
     df = pd.read_sql(select, conn)
-
     return df
 
+
+def create_filter(name, placeholder, value, clearable, column, query, conn):
+    #  Создает объект фильтр
+    filter_values_list = get_db_data_to_datafame(conn, query)[column].to_list()
+    data_filter = [html.Div(name, className='filter_label'),
+                    dcc.Dropdown(options=filter_values_list, value=value, placeholder=placeholder, clearable=clearable,
+                        className='filter_dropdown', 
+                        id={'type': 'filter_dropdown', 'index': 'filter_web_service'}, )]
+    return data_filter
 
 
 # def get_db_connect():

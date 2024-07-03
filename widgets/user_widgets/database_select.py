@@ -1,18 +1,8 @@
-import sys, os, configparser
-from pathlib import Path
+# SELECTS FROM DATABASE
 
-config = configparser.ConfigParser()
-config_file = os.path.join(Path(__file__).resolve().parent.parent.parent, 'config.ini')   
-if os.path.exists(config_file):
-  config.read(config_file, encoding='utf-8')
-else:
-  print("error! config file doesn't exist"); sys.exit()
-
-DB_NAME = config['db']['db_name']
-DB_SCHEMA = config['db']['db_schema']
+from functions_library import DB_NAME, DB_SCHEMA
 
 select_query, select_columns = {}, {}
-
 
 s1 = 'web_service_usage'
 select_query[s1] = f"""
@@ -79,3 +69,10 @@ select_query[s7] = f"""
   select id, adrto, subj, textemail, attachmentfiles, datep, dates from {DB_NAME}.{DB_SCHEMA}.messages_email
 """
 select_columns[s7] = ['id', 'adrto', 'subj', 'textemail', 'attachmentfiles', 'datep', 'dates']
+
+
+s8 = ''
+select_query[s8] = f"""
+select id, adrto, subj, dates from {DB_NAME}.{DB_SCHEMA}.messages_telegram
+"""
+select_columns[s8] = ['id', 'adrto', 'subj', 'dates']

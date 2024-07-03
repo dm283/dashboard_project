@@ -3,10 +3,16 @@ from dash import Dash, dcc, html, Input, Output, State, dash_table, ALL
 
 
 id = 'table_record_details_2'
+table_name = 'Сообщения e-mail'
+widget_update_data_type = 'data'         # тип данных для output - для таблицы всегда data
+widget_select_index = 'messages_email'   # id соответствующего select из database_select.py
+сolumns_displayed = ['id', 'adrto', 'subj', 'dates']
+columns_all = ['id', 'adrto', 'subj', 'dates']
+
 #  Модальное окно с расширенными данными о записи
 modal_table_record = dbc.Modal(
                 [
-                    dbc.ModalHeader(dbc.ModalTitle('Детализация данных о пользователях онлайн', style={'fontSize': '20px'})),
+                    dbc.ModalHeader(dbc.ModalTitle(table_name, style={'fontSize': '20px'})),
                     dbc.ModalBody(id='modal_table_record_content_2'),
                     dbc.ModalFooter(html.Div([
                         dbc.Button("Закрыть", id='btn_modal_table_record_close_2', n_clicks=0,
@@ -30,7 +36,7 @@ modal_save_table_data = dbc.Modal(
                     dbc.ModalFooter(html.Div([
                         dbc.Button("Сохранить", id='btn_modal_save_table_data_save_2', n_clicks=0,
                             style={'width': '120px', 'marginRight': '10px'}, color="success"), 
-                        dcc.Download(id="download_dataframe_xlsx_2"), #########
+                        dcc.Download(id="download_dataframe_xlsx_2"),
                         dbc.Button("Закрыть", id='btn_modal_save_table_data_close_2', n_clicks=0,
                             style={'width': '120px'}, color="warning" )
                         ]))
@@ -45,10 +51,10 @@ widget = [ modal_table_record,
             html.H6([     
                 html.Span(html.Img(src='assets/baseline_save_white.png', id='btn_open_modal_save_table_data_2', n_clicks=0,), 
                           className='icon_save_table_data'),
-                html.Span('Детализация данных о пользователях онлайн', style={'marginLeft': '110px'}),
+                html.Span(table_name, style={'marginLeft': '210px'}),
                 ], style={'color': 'white', 'backgroundColor': 'None', 'marginBottom': '2px', 'textAlign': 'left'}), 
             dash_table.DataTable(
-                columns=[{"name": i, "id": i} for i in ['user_id', 'device', 'country', 'sign_date']],
+                columns=[{"name": i, "id": i} for i in сolumns_displayed],
                 style_cell = {'font_size': '10px', 'textAlign': 'center'},
                 page_action='none',
                 style_table={'height': '720px', 'overflowY': 'auto'},
@@ -58,25 +64,22 @@ widget = [ modal_table_record,
                 ),
         ]
 
-widget_update_data_type = 'data'
-widget_select_index = 'web_service_usage'
-
 
 def widget_update(df, filter_values_list, n):
     #  Функция обновления данных таблицы
     
-    devices = ['desktop', 'mobile']
-    countries = ['India', 'Russia', 'England', 'US', 'Japan', 'China', 'Australia', 'Canada']
+    # devices = ['desktop', 'mobile']
+    # countries = ['India', 'Russia', 'England', 'US', 'Japan', 'China', 'Australia', 'Canada']
+    # filter_device = devices if filter_values_list[0] == None else [filter_values_list[0]]
+    # filter_country = countries if filter_values_list[1] == None else [filter_values_list[1]]
+    # filter_web_service = [filter_values_list[2]] 
 
-    filter_device = devices if filter_values_list[0] == None else [filter_values_list[0]]
-    filter_country = countries if filter_values_list[1] == None else [filter_values_list[1]]
-    filter_web_service = [filter_values_list[2]] 
+    df_table = df
 
-    df_table = df[
-        (df['web_service'].isin(filter_web_service)) &
-        (df['device'].isin(filter_device)) & 
-        (df['country'].isin(filter_country))
-        ]
-    data = df_table[['id', 'web_service', 'user_id', 'device', 'country', 'user_status', 'sign_date', 'signout_date']].to_dict('records')
+    #  добавляем необходимые фильтры данных
+    if filter_values_list[3]:
+        df_table = df_table[ df_table['adrto'].isin([filter_values_list[3]]) ]
+
+    data = df_table[columns_all].to_dict('records')
     
     return data

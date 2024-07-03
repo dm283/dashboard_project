@@ -128,7 +128,8 @@ def update_data(filter_values_list, n, n_update_btn):
 
     df = {}
     for s in select_query.keys():
-        df[s] = dfl.get_db_data_to_datafame(conn, select_query[s], select_columns[s])
+        # df[s] = dfl.get_db_data_to_datafame(conn, select_query[s], select_columns[s])
+        df[s] = dfl.get_db_data_to_datafame(conn, select_query[s])
         df[s]['cnt'] = 1
 
 
