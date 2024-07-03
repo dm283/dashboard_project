@@ -20,5 +20,5 @@ tab_content = template_1.create_template(
     widget_1_2_1=widget['graph_pie_devices'],
     widget_1_2_2=widget['graph_bar_countries'],
     widget_1_3_1=widget['graph_scatter_cnt_users'],
-    widget_2_1=widget['table_record_details']
+    widget_2_1=widget['table_record_details_1']
     )

@@ -194,7 +194,8 @@ def toggle_offcanvas_filters(n1, is_open):
 
 
 #  Набор функций для каждого соответствующего виджета (таблицы)
-for i in ['', '_2', '_3']:
+#  Здесь прописываем все алиасы таблиц, в которых использована функция create_table
+for i in ['_1', '_2', '_3']:
     @app.callback(Output(f'modal_table_record{i}', 'is_open'), Output(f'modal_table_record_content{i}', 'children'),
         Output(f'table_record_details{i}', 'active_cell'), Output(f'btn_modal_table_record_close{i}', 'n_clicks'), 
         Input(f'table_record_details{i}', 'active_cell'), State(f'table_record_details{i}', 'data'), 

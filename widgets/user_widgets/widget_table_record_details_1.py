@@ -5,8 +5,8 @@ from widget_templates.table_template import create_table
 #  заполняем эти данные =================================================================================================
 #     сolumns_displayed - отображаемые в таблице столбцы / columns_all - все загруженные столбцы (отображаются в окне записи)
 #     исходный select при этом может иметь больше столбцов!
-id = 'table_record_details_3'
-table_alias = '3'
+id = 'table_record_details_1'
+table_alias = '1'
 table_name = 'Детализация данных о пользователях онлайн'
 widget_select_index = 'web_service_usage'                 # id соответствующего select из database_select.py
 сolumns_displayed = ['user_id', 'device', 'country', 'sign_date']
@@ -16,7 +16,7 @@ pagination = False
 def widget_update(df, filter_values_list, n):
     #  Функция обновления данных таблицы
     df_table = df
-    
+
     #  добавляем необходимые фильтры данных
     if filter_values_list[0]:
         df_table = df_table[ df_table['device'].isin([filter_values_list[0]]) ]
@@ -43,18 +43,10 @@ widget = create_table(
 
 
 
-
-
-
-
-
-
-
-
 # # сolumns_displayed - отображаемые в таблице столбцы / columns_all - все загруженные столбцы (отображаются в окне записи)
 # # исходный select при этом может иметь больше столбцов!
 
-# id = 'table_record_details_3'
+# id = 'table_record_details'
 # table_name = 'Детализация данных о пользователях онлайн'
 # widget_update_data_type = 'data'               # тип данных для output - для таблицы всегда data
 # widget_select_index = 'web_service_usage'      # id соответствующего select из database_select.py
@@ -66,13 +58,13 @@ widget = create_table(
 # modal_table_record = dbc.Modal(
 #                 [
 #                     dbc.ModalHeader(dbc.ModalTitle(table_name, style={'fontSize': '20px'})),
-#                     dbc.ModalBody(id='modal_table_record_content_3'),
+#                     dbc.ModalBody(id='modal_table_record_content'),
 #                     dbc.ModalFooter(html.Div([
-#                         dbc.Button("Закрыть", id='btn_modal_table_record_close_3', n_clicks=0,
+#                         dbc.Button("Закрыть", id='btn_modal_table_record_close', n_clicks=0,
 #                             style={'width': '120px'}, color="warning" )
 #                         ]))
 #                 ],
-#                 id='modal_table_record_3',
+#                 id='modal_table_record',
 #                 is_open=False
 #             )
 
@@ -83,18 +75,18 @@ widget = create_table(
 #                     dbc.ModalBody([
 #                         dbc.Row([
 #                             dbc.Col(dbc.Label("Наименование файла"), width=7),
-#                             dbc.Col(dbc.Input(id='input_file_name_3', type='text'))
+#                             dbc.Col(dbc.Input(id='input_file_name', type='text'))
 #                         ], style={'marginBottom': '5px'}),
 #                     ]),
 #                     dbc.ModalFooter(html.Div([
-#                         dbc.Button("Сохранить", id='btn_modal_save_table_data_save_3', n_clicks=0,
+#                         dbc.Button("Сохранить", id='btn_modal_save_table_data_save', n_clicks=0,
 #                             style={'width': '120px', 'marginRight': '10px'}, color="success"), 
-#                         dcc.Download(id="download_dataframe_xlsx_3"),
-#                         dbc.Button("Закрыть", id='btn_modal_save_table_data_close_3', n_clicks=0,
+#                         dcc.Download(id="download_dataframe_xlsx"), 
+#                         dbc.Button("Закрыть", id='btn_modal_save_table_data_close', n_clicks=0,
 #                             style={'width': '120px'}, color="warning" )
 #                         ]))
 #                 ],
-#                 id='modal_save_table_data_3',
+#                 id='modal_save_table_data',
 #                 is_open=False
 #             )
 
@@ -111,7 +103,7 @@ widget = create_table(
 # widget = [ modal_table_record,
 #            modal_save_table_data,
 #             html.H6([     
-#                 html.Span(html.Img(src='assets/baseline_save_white.png', id='btn_open_modal_save_table_data_3', n_clicks=0,), 
+#                 html.Span(html.Img(src='assets/baseline_save_white.png', id='btn_open_modal_save_table_data', n_clicks=0,), 
 #                           className='icon_save_table_data'),
 #                 html.Span(table_name, style={'marginLeft': '110px'}),
 #                 ], style={'color': 'white', 'backgroundColor': 'None', 'marginBottom': '2px', 'textAlign': 'left'}), 
@@ -129,7 +121,7 @@ widget = create_table(
 
 # def widget_update(df, filter_values_list, n):
 #     #  Функция обновления данных таблицы
-    
+
 #     df_table = df
 
 #     #  добавляем необходимые фильтры данных
@@ -141,6 +133,7 @@ widget = create_table(
 #         df_table = df_table[ df_table['web_service'].isin([filter_values_list[2]]) ]
 
 #     data = df_table[columns_all].to_dict('records')
+
 
 #     # devices = ['desktop', 'mobile']
 #     # countries = ['India', 'Russia', 'England', 'US', 'Japan', 'China', 'Australia', 'Canada']
@@ -154,6 +147,6 @@ widget = create_table(
 #     #     (df['device'].isin(filter_device)) & 
 #     #     (df['country'].isin(filter_country))
 #     #     ]
-#     # data = df_table[[columns_all]].to_dict('records')
+#     # data = df_table[columns_all].to_dict('records')
     
 #     return data
