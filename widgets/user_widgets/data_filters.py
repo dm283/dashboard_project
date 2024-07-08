@@ -9,6 +9,7 @@ data_filter = {}
 
 # filter 0
 id = 0
+f_type = 'dropdown'
 name = 'Тип устройства'
 placeholder = 'Выберите тип устройства'
 value = None
@@ -17,10 +18,11 @@ column = 'device'
 query = f"""
     select distinct device from {DB_NAME}.{DB_SCHEMA}.web_service_usage order by device
     """
-data_filter[id] = create_filter(name, placeholder, value, clearable, column, query, conn)
+data_filter[id] = create_filter(f_type, name, placeholder, value, clearable, column, query, conn)
 
 # filter 1
 id = 1
+f_type = 'dropdown'
 name = 'Страна пользователя'
 placeholder = 'Выберите страну'
 value = None
@@ -29,10 +31,11 @@ column = 'country'
 query = f"""
     select distinct country from {DB_NAME}.{DB_SCHEMA}.web_service_usage order by country
     """
-data_filter[id] = create_filter(name, placeholder, value, clearable, column, query, conn)
+data_filter[id] = create_filter(f_type, name, placeholder, value, clearable, column, query, conn)
 
 # filter 2
 id = 2
+f_type = 'dropdown'
 name = 'Веб-сервис'
 placeholder = 'Выберите веб-сервис'
 value = 'aDashboard'
@@ -41,10 +44,11 @@ column = 'web_service'
 query = f"""
     select distinct web_service from {DB_NAME}.{DB_SCHEMA}.web_service_usage order by web_service
     """
-data_filter[id] = create_filter(name, placeholder, value, clearable, column, query, conn)
+data_filter[id] = create_filter(f_type, name, placeholder, value, clearable, column, query, conn)
 
 # filter 3
 id = 3
+f_type = 'dropdown'
 name = 'Адрес e-mail'
 placeholder = 'Выберите адрес e-mail'
 value = None
@@ -53,10 +57,19 @@ column = 'adrto'
 query = f"""
     select distinct adrto from {DB_NAME}.{DB_SCHEMA}.messages_email order by adrto
     """
-data_filter[id] = create_filter(name, placeholder, value, clearable, column, query, conn)
+data_filter[id] = create_filter(f_type, name, placeholder, value, clearable, column, query, conn)
 
 
-
+# filter 4
+id = 4
+f_type = 'date_picker'
+name = 'Дата обработки e-mail (dates)'
+placeholder = 'Выберите date of e-mail'
+value = None
+clearable = True
+column = 'dates'
+query = ''
+data_filter[id] = create_filter(f_type, name, placeholder, value, clearable, column, query, conn)
 
 # fltr_list[3] = dfl.get_db_data_to_datafame(conn, 
 #     f'select distinct adrto from {dfl.DB_NAME}.{dfl.DB_SCHEMA}.messages_email order by adrto'

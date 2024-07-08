@@ -21,6 +21,12 @@ def widget_update(df, filter_values_list, n):
     if filter_values_list[3]:
         df_table = df_table[ df_table['adrto'].isin([filter_values_list[3]]) ]
 
+    if filter_values_list[4]:
+        if filter_values_list[4][0]:
+            df_table = df_table[ df_table['dates'] >= filter_values_list[4][0] ]
+        if filter_values_list[4][1]:
+            df_table = df_table[ df_table['dates'] <= filter_values_list[4][1] ]       
+
     data = df_table[columns_all].to_dict('records')
     return data
 
