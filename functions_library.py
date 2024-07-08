@@ -53,7 +53,7 @@ def create_filter(name, placeholder, value, clearable, column, query, conn):
     data_filter = [html.Div(name, className='filter_label'),
                     dcc.Dropdown(options=filter_values_list, value=value, placeholder=placeholder, clearable=clearable,
                         className='filter_dropdown', 
-                        id={'type': 'filter_dropdown', 'index': 'filter_web_service'}, )]
+                        id={'type': 'filter_dropdown', 'index': f'filter_{column}'}, )]
     return data_filter
 
 
