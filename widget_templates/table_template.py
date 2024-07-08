@@ -51,6 +51,7 @@ def create_table(table_id, table_alias, table_name, pagination, сolumns_display
         table_height = '720px'
         table_page_action = 'none'
 
+    margin_left = 7 * (80 - len(table_name)) // 2  #  расчет отступа названия таблицы в пикселях
 
     #  Виджет "Таблица"
     widget = [ modal_table_record,
@@ -58,7 +59,7 @@ def create_table(table_id, table_alias, table_name, pagination, сolumns_display
                 html.H6([     
                     html.Span(html.Img(src='assets/baseline_save_white.png', id='btn_open_modal_save_table_data_'+table_alias, n_clicks=0,), 
                             className='icon_save_table_data'),
-                    html.Span(table_name, style={'marginLeft': '210px'}),
+                    html.Span(table_name, style={'marginLeft': f'{margin_left}px'}),
                     ], style={'color': 'white', 'backgroundColor': 'None', 'marginBottom': '2px', 'textAlign': 'left'}), 
                 dash_table.DataTable(
                     id=table_id,
@@ -68,6 +69,8 @@ def create_table(table_id, table_alias, table_name, pagination, сolumns_display
                     style_header={'backgroundColor': 'Black', 'color': 'white'},
                     style_data={'backgroundColor': 'DarkSlateGray', 'color': 'white'},
                     page_action=table_page_action, page_current=0, page_size=21,
+                    sort_action='native',
+                    # filter_action='native',
                     ),
             ]
     
