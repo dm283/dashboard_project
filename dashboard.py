@@ -116,8 +116,8 @@ def update_output(n_clicks, user_input, password_input):
     Output('interval_component', 'interval'),
     Output('update_date', 'children'),
     Input({'type': 'filter_dropdown', 'index': ALL}, 'value'),  #  список значений всех фильтров
-    Input({'type': 'filter_date', 'index': ALL}, 'start_date'), ################
-    Input({'type': 'filter_date', 'index': ALL}, 'end_date'), ################
+    Input({'type': 'filter_date', 'index': ALL}, 'start_date'), 
+    Input({'type': 'filter_date', 'index': ALL}, 'end_date'), 
     Input('interval_component', 'n_intervals'),
     Input('btn_update_data', 'n_clicks')
 )
