@@ -130,7 +130,35 @@
   
 .filter_dropdown .Select-menu-outer {
     background-color: White;
-    color: Black;
+    color: black;
+}
+
+.DateRangePickerInput {
+    border: 1px solid LightGray;
+    border-radius: 3px;
+    height: 35px;
+    width: 355px;
+}
+
+.DateRangePickerInput:active {
+    width: 340px;
+}
+
+.DateInput {
+    /* border: 1px solid gainsboro; */
+    border-radius: 3px;
+    height: 33px;
+    width: 140px;
+}
+
+.DateInput_input {
+    /* border: 1px solid gainsboro; */
+    border-radius: 3px;
+    height: 33px;
+    font-family:Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 15px;
+    color: DimGray;
+    width: 140px;
 }
 
 /* changes the text color of input box */

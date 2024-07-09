@@ -24,7 +24,7 @@ def widget_update(df, filter_values_list, n):
         df_table = df_table[ df_table['country'].isin([filter_values_list[1]]) ]
     if filter_values_list[2]:
         df_table = df_table[ df_table['web_service'].isin([filter_values_list[2]]) ]
-
+    
     data = df_table[columns_all].to_dict('records')
     return data
 

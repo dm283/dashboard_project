@@ -2,6 +2,7 @@
 import sys, os, configparser, psycopg2, pyodbc, pandas as pd
 from pathlib import Path
 from dash import dcc, html
+from datetime import date
 
 config = configparser.ConfigParser()
 config_file = os.path.join(Path(__file__).resolve().parent, 'config.ini')   
@@ -47,13 +48,19 @@ def get_db_data_to_datafame(conn, select):
     return df
 
 
-def create_filter(name, placeholder, value, clearable, column, query, conn):
+def create_filter(f_type, name, placeholder, value, clearable, column, query, conn):
     #  Создает объект фильтр
-    filter_values_list = get_db_data_to_datafame(conn, query)[column].to_list()
-    data_filter = [html.Div(name, className='filter_label'),
-                    dcc.Dropdown(options=filter_values_list, value=value, placeholder=placeholder, clearable=clearable,
-                        className='filter_dropdown', 
-                        id={'type': 'filter_dropdown', 'index': f'filter_{column}'}, )]
+    if f_type == 'date_picker':
+      data_filter = [html.Div(name, className='filter_label'),
+        dcc.DatePickerRange( clearable=clearable, className='filter_date_picker', display_format='D/M/Y',
+                            id={'type': 'filter_date', 'index': f'filter_{column}'}, ),
+      ]
+    else:
+      filter_values_list = get_db_data_to_datafame(conn, query)[column].to_list()
+      data_filter = [html.Div(name, className='filter_label'),
+                      dcc.Dropdown(options=filter_values_list, value=value, placeholder=placeholder, clearable=clearable,
+                          className='filter_dropdown', 
+                          id={'type': 'filter_dropdown', 'index': f'filter_{column}'}, )]
     return data_filter
 
 
